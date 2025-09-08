@@ -355,3 +355,6 @@ data/processed/*
 data/tmp/*
 data/upcoming_features_rows.csv
 data/upcoming_preds.csv
+
+# macOS system files
+.DS_Store
