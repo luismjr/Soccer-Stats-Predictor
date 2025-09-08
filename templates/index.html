@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luis’s Premier League Match Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Robust CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="max-w-5xl mx-auto px-4 pt-10">
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+      Luis’s <span class="text-indigo-600">Premier League</span> Match Predictor
+    </h1>
+    <p class="mt-2 text-gray-600">Next 10 fixtures and your model’s probabilities (from CSV).</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+    <div id="status" class="hidden rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700"></div>
+
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <label for="sort" class="text-sm text-gray-600">Sort by:</label>
+        <select id="sort" class="rounded-md border-gray-300 text-sm">
+          <option value="date">Kickoff (soonest)</option>
+          <option value="conf">Confidence (highest)</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="minConf" class="text-sm text-gray-600">Min confidence:</label>
+        <input id="minConf" type="number" min="0" max="100" step="1" value="0"
+               class="w-24 rounded-md border-gray-300 text-sm px-2 py-1" />
+        <span class="text-sm text-gray-500">%</span>
+      </div>
+    </div>
+
+    <div id="list" class="grid gap-4"></div>
+  </main>
+
+  <footer class="max-w-5xl mx-auto px-4 pb-10 text-xs text-gray-500">
+    <p id="modelMeta">Model: Random Forest (CSV: data/upcoming_preds.csv)</p>
+  </footer>
+
+  <script>
+    const CSV_URL = "/data/upcoming_preds.csv"; // path to your file
+    const statusEl = document.getElementById("status");
+    const listEl = document.getElementById("list");
+    const sortEl = document.getElementById("sort");
+    const minConfEl = document.getElementById("minConf");
+
+    const fmtPct = p => (Number(p) * 100).toFixed(1) + "%";
+    const toLocalDate = iso => new Date(iso).toLocaleString(undefined, {
+      weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"
+    });
+
+    function pickOutcome(row) {
+      const h = Number(row.p_home_win);
+      const d = Number(row.p_draw);
+      const a = Number(row.p_home_loss); // "home loss" = away win
+      const m = Math.max(h, d, a);
+      if (m === h) return ["Home", h];
+      if (m === d) return ["Draw", d];
+      return ["Away", a];
+    }
+
+    function showStatus(msg, type = "info") {
+      statusEl.classList.remove("hidden");
+      statusEl.classList.toggle("border-yellow-300", type === "info");
+      statusEl.classList.toggle("border-red-300", type === "error");
+      statusEl.textContent = msg;
+    }
+
+    function render(rows) {
+      listEl.innerHTML = "";
+      if (!rows.length) {
+        listEl.innerHTML = `<div class="rounded-lg border border-dashed p-6 text-center text-gray-500">
+          No matches meet your filters.
+        </div>`;
+        return;
+      }
+
+      rows.slice(0, 10).forEach(r => {
+        const [pick, conf] = pickOutcome(r);
+        const confPct = fmtPct(conf);
+        const badge =
+          pick === "Home" ? "bg-green-100 text-green-700"
+          : pick === "Draw" ? "bg-gray-100 text-gray-700"
+          : "bg-blue-100 text-blue-700";
+
+        const barHome = Math.round(Number(r.p_home_win) * 100);
+        const barDraw = Math.round(Number(r.p_draw) * 100);
+        const barAway = Math.round(Number(r.p_home_loss) * 100);
+
+        const el = document.createElement("article");
+        el.className = "rounded-2xl bg-white shadow-sm border border-gray-200 p-4";
+        el.innerHTML = `
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="text-sm text-gray-500">${toLocalDate(r.Date)}</div>
+              <h3 class="text-lg font-semibold mt-1">${r.Home}
+                <span class="text-gray-400 font-normal">vs</span> ${r.Away}</h3>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium ${badge}">
+              Pick: ${pick} · ${confPct}
+            </span>
+          </div>
+
+          <div class="mt-3">
+            <div class="h-2 w-full bg-gray-100 rounded overflow-hidden flex">
+              <div title="Home win ${barHome}%"
+                   style="width:${barHome}%"
+                   class="h-2"></div>
+              <div title="Draw ${barDraw}%"
+                   style="width:${barDraw}%"
+                   class="h-2"></div>
+              <div title="Away win ${barAway}%"
+                   style="width:${barAway}%"
+                   class="h-2"></div>
+            </div>
+            <div class="mt-2 grid grid-cols-3 text-xs text-gray-600">
+              <div class="text-left">Home ${fmtPct(r.p_home_win)}</div>
+              <div class="text-center">Draw ${fmtPct(r.p_draw)}</div>
+              <div class="text-right">Away ${fmtPct(r.p_home_loss)}</div>
+            </div>
+          </div>
+        `;
+        listEl.appendChild(el);
+      });
+    }
+
+    function applyView(all) {
+      const minC = Math.max(0, Math.min(100, Number(minConfEl.value || 0))) / 100;
+      let rows = all.filter(r => {
+        const [, c] = pickOutcome(r);
+        return c >= minC;
+      });
+
+      if (sortEl.value === "date") {
+        rows.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+      } else {
+        rows.sort((a, b) => {
+          const [, ca] = pickOutcome(a);
+          const [, cb] = pickOutcome(b);
+          return cb - ca || (new Date(a.Date) - new Date(b.Date));
+        });
+      }
+      render(rows);
+    }
+
+    (async function init() {
+      try {
+        showStatus("Loading fixtures from CSV…");
+        Papa.parse(CSV_URL, {
+          download: true,
+          header: true,
+          dynamicTyping: true,
+          complete: (res) => {
+            const rows = res.data
+              .filter(r => r.Date && r.Home && r.Away)
+              .map(r => ({
+                Season: r.Season,
+                Date: new Date(String(r.Date)).toISOString(), // CSV has UTC; keep as ISO
+                Home: String(r.Home),
+                Away: String(r.Away),
+                pred_class: r.pred_class,
+                pred_label: String(r.pred_label || ""),
+                p_home_loss: Number(r.p_home_loss),
+                p_draw: Number(r.p_draw),
+                p_home_win: Number(r.p_home_win),
+              }))
+              .filter(r => !Number.isNaN(r.p_home_loss) && !Number.isNaN(r.p_draw) && !Number.isNaN(r.p_home_win));
+
+            const now = Date.now();
+            const future = rows
+              .filter(r => new Date(r.Date).getTime() >= now)
+              .sort((a, b) => new Date(a.Date) - new Date(b.Date));
+
+            document.getElementById("status").classList.add("hidden");
+            applyView(future);
+
+            document.getElementById("sort").addEventListener("change", () => applyView(future));
+            document.getElementById("minConf").addEventListener("input", () => applyView(future));
+          },
+          error: (err) => {
+            console.error(err);
+            showStatus("Couldn’t parse /data/upcoming_preds.csv", "error");
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        showStatus("Error loading CSV.", "error");
+      }
+    })();
+  </script>
+
+  <style>
+    /* probability bar segments */
+    .h-2 > div:nth-child(1){ background-color: rgb(187 247 208); } /* green-200 (Home) */
+    .h-2 > div:nth-child(2){ background-color: rgb(229 231 235); } /* gray-200 (Draw) */
+    .h-2 > div:nth-child(3){ background-color: rgb(191 219 254); } /* blue-200 (Away) */
+  </style>
+</body>
+</html>

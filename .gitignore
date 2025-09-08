@@ -348,3 +348,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# data
+data/raw/*
+data/processed/*
+data/tmp/*
+data/upcoming_features_rows.csv
+data/upcoming_preds.csv
