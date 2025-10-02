@@ -157,10 +157,6 @@ python update_predictions.py
 
 ---
 
-![Premier League Match Predictor screenshot](docs/preview.png)
-
----
-
 ## 📧 Contact
 
 **Luis Martinez** - [LinkedIn](http://www.linkedin.com/in/luismjr0707) - [Email](luismjr07@gmail.com)
