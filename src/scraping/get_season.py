@@ -78,7 +78,7 @@ def fetch_pl_squad_standard(end_year: int, timeout=30) -> pd.DataFrame:
 
     Params:
     - end_year (int): The end year of the season (e.g., 2025)
-    - timeout (int): The timeout for the request in seconds (default: 30)
+    - timeout (int): The timeout (wait time) for the request in seconds (default: 30)
     Returns:
     - df (pd.DataFrame): The dataframe of squad standard stats for the given season
     """
@@ -96,54 +96,20 @@ def fetch_pl_squad_standard(end_year: int, timeout=30) -> pd.DataFrame:
         raise RuntimeError(f"Could not find Squad Standard table on page: {url}")
 
     # Finds the tables with the title "Squad Standard Stats"
-    df_list = pd.read_html(html, match="Squad Standard Stats")
+    # Use StringIO to avoid FutureWarning about passing literal HTML
+    sio = StringIO(html)
+    df_list = pd.read_html(sio, match="Squad Standard Stats")
     if not df_list:
         # Some seasons don't include the title text in the parsed fragment; fallback to first table.
-        df_list = pd.read_html(html)
+        sio = StringIO(html)  # Reset StringIO
+        df_list = pd.read_html(sio)
 
-    # Gets the firstdf from the table
+    # Gets the firstdf from the web page
     df = df_list[0]
 
-    # print("Raw DataFrame:")
-    # print(df.head(15))   # show first 15 rows to can spot headers/NaNs
-    # print(df.info())     # shows row counts, dtypes, NaNs
-
-    # Drop rows that are header repeats or aggregates (where 'Squad' is NaN or 'Squad' equals 'Squad')
-    if "Squad" in df.columns:
-        df = df[df["Squad"].notna()]
-        df = df[df["Squad"].str.lower() != "squad"]
-
-    # Add season label
-    df["Season"] = season_label(end_year)
-
-    # Clean multi-index columns (Multiople header rows) if present
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = [" ".join([str(x) for x in tup if str(x) != "nan"]).strip() for tup in df.columns]
-
     # Reset indexes after dropping header repeats and return the dataframe
-    return df.reset_index(drop=True)
+    return df
 
-
-def fetch_many_seasons(end_years: Iterable[int], delay_sec: float = 3.0) -> pd.DataFrame:
-    """
-    Loop over seasons and concatenate results.
-    
-    Params:
-    - end_years (Iterable[int]): The end years of each season to be fetches data from (e.g., [2025, 2024, 2023])
-    - delay_sec (float): The delay in seconds between requests (default: 3.0)
-    Returns:
-    - combo (pd.DataFrame): The concatenated dataframe of squad standard stats from the previous 5 seasons
-    """
-    # Start a list of pandas dataframes
-    frames = []
-
-    for y in end_years:
-        print(f"Fetching {season_label(y)} …")
-        df = fetch_pl_squad_standard(y)
-        frames.append(df)
-        time.sleep(delay_sec)
-    combo = pd.concat(frames, ignore_index=True)
-    return combo
 
 
 if __name__ == "__main__":
@@ -157,13 +123,26 @@ if __name__ == "__main__":
     else:
         last5_end_years = list(range(current_year, current_year - 4, -1))  # e.g., 2025..2021
 
-    all_df = fetch_many_seasons(last5_end_years, delay_sec=3)
+    # Ensure output directory exists
+    Path("data/raw/season").mkdir(parents=True, exist_ok=True)
 
-    # Save per-season and combined
-    for y in last5_end_years:
-        sl = season_label(y)
-        out = all_df[all_df["Season"] == sl].reset_index(drop=True)
-        out.to_csv(f"data/raw/squad_standard_{sl}.csv", index=False)
+    # Get season-wide stats for each season
+    for y in last5_end_years: # last 5 seasons
+        sl = season_label(y) # season label
+        print(f"Fetching {sl} …")
+        
+        # Try to fetch the season-wide stats
+        try:
+            df = fetch_pl_squad_standard(y)
+            # Save the dataframe to a csv file
+            df.to_csv(f"data/raw/season/team_stats_{sl}.csv", index=False)
+            print(f"Saved to data/raw/season/team_stats_{sl}.csv")
+            time.sleep(3)  # Be polite between requests
 
-    all_df.to_csv("data/raw/squad_standard_last5.csv", index=False)
+        # If the season-wide stats are not found, print an error message and continue
+        except Exception as e:
+            print(f"  Failed to fetch {sl}: {e}")
+            print(f"  Skipping this season and continuing...")
+            continue
+
     print("Done ✓")

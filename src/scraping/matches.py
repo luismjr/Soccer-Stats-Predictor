@@ -288,6 +288,7 @@ def fetch_pl_matches_one_season(end_year: int, timeout: int = 30) -> pd.DataFram
 
     # 2. Get the links separately
     links_df = _extract_schedule_links(soup)
+    
     # Parse Date_raw into datetime to match df["Date"]
     if not links_df.empty:
         links_df["Date"] = pd.to_datetime(links_df["Date_raw"], errors="coerce", utc=True)
