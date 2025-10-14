@@ -27,10 +27,10 @@ from bs4 import BeautifulSoup, Comment
 from requests.adapters import HTTPAdapter, Retry
 from typing import Dict, List, Optional
 
-_NUM = r"-?\d{1,3}(?:,\d{3})*(?:\.\d+)?"
-PCT_RE = re.compile(rf"^\s*({_NUM})\s*%\s*$")
-NUM_RE = re.compile(rf"^\s*{_NUM}\s*$")
-_MAIN_LABELS = ["Possession", "Passing Accuracy", "Shots on Target", "Saves"]
+_NUM = r"-?\d{1,3}(?:,\d{3})*(?:\.\d+)?" # Matches numbers with optional commas and decimal points
+PCT_RE = re.compile(rf"^\s*({_NUM})\s*%\s*$") # Turns percentages into objects with methods
+NUM_RE = re.compile(rf"^\s*{_NUM}\s*$") # Turnes numbers into objects with methods
+_MAIN_LABELS = ["Possession", "Passing Accuracy", "Shots on Target", "Saves"] # Main labels to extract
 
 BROWSER_HEADERS = {
     "User-Agent": (
@@ -45,25 +45,37 @@ BROWSER_HEADERS = {
 }
 def make_session() -> requests.Session:
     """
-    Make a requests session with the browser headers.
+    Creates a robust requests session with automatic retries and browser-like headers.
+    
+    The session is configured to:
+    - Use realistic browser headers to avoid being blocked
+    - Automatically retry failed requests (up to 4 times)
+    - Use exponential backoff between retries
+    - Handle common HTTP errors (429, 500, 502, 503, 504)
+    
+    Returns:
+    - requests.Session: A configured session ready for web scraping
     """
+    # Startes session with browser headers
     s = requests.Session()
     s.headers.update(BROWSER_HEADERS)
+    
+    # Configure automatic retry strategy object
     retries = Retry(
-        total=4, 
-        backoff_factor=1.5,
-        status_forcelist=(429, 500, 502, 503, 504),
+        total=4,  # Maximum number of retry attempts
+        backoff_factor=1.5,  # Wait time multiplier: 1.5s, 2.25s, 3.375s, etc.
+        status_forcelist=(429, 500, 502, 503, 504),  # HTTP errors that trigger retry
         allowed_methods=("GET", "HEAD"),
         raise_on_status=False,
     )
-    # Adapter is used to customize the behavior of the session
+    
+    # Adapter customizes session behavior with retry logic and connection pooling (Reusing /SockeyTCP connections)
     adapter = HTTPAdapter(max_retries=retries, pool_connections=8, pool_maxsize=8)
 
-    # Mount the adapter to the session
+    # Mount the adapter to handle both http and https requests
     s.mount("https://", adapter)
     s.mount("http://", adapter)
 
-    # Return the session
     return s
 
 def polite_sleep(min_s: float, max_s: float) -> None:
@@ -82,22 +94,50 @@ def polite_sleep(min_s: float, max_s: float) -> None:
 
 
 def _norm(s: str) -> str:
+    """
+    Normalizes text by standardizing dashes, removing non-breaking spaces, and trimming whitespace.
+    
+    Params:
+    - s (str): Raw text string
+    Returns:
+    - (str): Normalized text
+    """
     return (s or "").replace("–", "-").replace("—", "-").replace("\xa0", " ").strip()
 
 def _canon_label(raw: str) -> str:
+    """
+    Converts a label to canonical form for use as a dictionary key.
+    Examples: "Shots on Target" → "ShotsOnTarget", "passing accuracy:" → "PassingAccuracy"
+    
+    Params:
+    - raw (str): Raw label text
+    Returns:
+    - (str): Canonical label in TitleCase with no spaces or punctuation
+    """
     toks = re.findall(r"[A-Za-z0-9]+", _norm(raw).rstrip(":"))
     return "".join(t.title() for t in toks) if toks else ""
 
 def _to_num(s: Optional[str]) -> Optional[float]:
+    """
+    Converts a string to a float, handling percentages and comma-separated numbers.
+    Examples: "45.2%", "1,234", "67.5" → 45.2, 1234.0, 67.5
+    
+    Params:
+    - s (Optional[str]): String representation of a number
+    Returns:
+    - (Optional[float]): Parsed float value, or None if parsing fails
+    """
     if s is None:
         return None
     s = _norm(s)
+    # Check if it's a percentage
     m = PCT_RE.match(s)
     if m:
         try:
             return float(m.group(1).replace(",", ""))
         except Exception:
             return None
+    # Check if it's a regular number
     if NUM_RE.match(s):
         try:
             return float(s.replace(",", ""))
@@ -106,25 +146,48 @@ def _to_num(s: Optional[str]) -> Optional[float]:
     return None
 
 def parse_div_team_stats(soup: BeautifulSoup) -> Dict[str, float]:
+    """
+    Parses the main team stats section (div#team_stats) which displays key match stats as bars.
+    
+    This extracts metrics like:
+    - Possession: e.g., "55% vs 45%"
+    - Passing Accuracy: e.g., "234 of 289 — 81% vs 198 of 251 — 79%"
+    - Shots on Target: e.g., "5 of 12 vs 3 of 8"
+    - Saves: e.g., "3 vs 5"
+    
+    For each stat, extracts up to three components:
+    - Made: The first number (e.g., shots made, passes completed)
+    - Att: Attempts (if present, e.g., "5 of 12" → made=5, att=12)
+    - Pct: Percentage (if present)
+    
+    Params:
+    - soup (BeautifulSoup): The parsed HTML of the match report page
+    Returns:
+    - Dict[str, float]: Dictionary with keys like "HomePossessionMade", "AwayPassingAccuracyPct", etc.
+    """
     out: Dict[str, float] = {}
     cont = soup.select_one("div#team_stats")
     if not cont:
         return out
 
+    # Get all text tokens from the container
     txts = [t.strip() for t in cont.stripped_strings if t.strip()]
+    
     for label in _MAIN_LABELS:
-        # find label then take next two tokens as home/away
+        # Find the label in the text, then the next two tokens are home/away values
+        # Give me index for every image and text elementif it mathces the label
         idx = next((i for i, t in enumerate(txts) if t.lower() == label.lower()), None)
         if idx is None:
+            # Fallback: try matching just the first word (e.g., "Possession")
             token = label.split()[0].lower()
             idx = next((i for i, t in enumerate(txts) if token in t.lower()), None)
         if idx is None or idx + 2 >= len(txts):
             continue
 
-        left, right = txts[idx + 1], txts[idx + 2]
+        left, right = txts[idx + 1], txts[idx + 2]  # Home, Away values
         base = _canon_label(label)
 
-        # split "x of y — z%" or "x/y z%" if present
+        # Helper function to split compound stats like "234 of 289 — 81%"
         def split_combo(s: str):
             m_of = re.search(rf"({_NUM})\s*(?:of|/)\s*({_NUM})", s, re.I)
             p = re.search(rf"({_NUM})\s*%", s)
@@ -136,6 +199,7 @@ def parse_div_team_stats(soup: BeautifulSoup) -> Dict[str, float]:
         h_made, h_att, h_pct = split_combo(left)
         a_made, a_att, a_pct = split_combo(right)
 
+        # Store each component with descriptive keys
         if h_made is not None: out[f"Home{base}Made"] = h_made
         if h_att  is not None: out[f"Home{base}Att"]  = h_att
         if h_pct  is not None: out[f"Home{base}Pct"]  = h_pct
@@ -147,9 +211,23 @@ def parse_div_team_stats(soup: BeautifulSoup) -> Dict[str, float]:
 
 # ---------- grids: #team_stats_extra ----------
 def find_team_stats_extra_node(soup: BeautifulSoup):
+    """
+    Locates the div#team_stats_extra section, which may be in the DOM or hidden in HTML comments.
+    
+    FBref sometimes wraps certain tables in HTML comments to prevent easy scraping.
+    This function checks both locations.
+    
+    Params:
+    - soup (BeautifulSoup): The parsed HTML of the match report page
+    Returns:
+    - BeautifulSoup node or None: The div#team_stats_extra element if found
+    """
+    # Try finding it directly in the DOM first
     node = soup.select_one("div#team_stats_extra")
     if node:
         return node
+    
+    # Search within HTML comments
     for c in soup.find_all(string=lambda t: isinstance(t, Comment)):
         if "team_stats_extra" in c:
             inner = BeautifulSoup(c, "lxml")
@@ -159,41 +237,68 @@ def find_team_stats_extra_node(soup: BeautifulSoup):
     return None
 
 def parse_div_team_stats_extra(soup: BeautifulSoup, home_team: str, away_team: str) -> Dict[str, float]:
+    """
+    Parses the extra team stats section (div#team_stats_extra) which displays additional match stats in grid format.
+    
+    This extracts metrics like:
+    - Corners, Fouls, Crosses, Interceptions, Offsides
+    - Goal Kicks, Throw Ins, Long Balls, etc.
+    
+    The layout is typically:
+        Home Value | Label | Away Value
+        Example: "6 | Corners | 4"
+    
+    This function uses a label-anchored parsing strategy:
+    1. Find each label (e.g., "Corners", "Fouls")
+    2. Search left for the home team's value
+    3. Search right for the away team's value
+    
+    Params:
+    - soup (BeautifulSoup): The parsed HTML of the match report page
+    - home_team (str): Home team name (used to skip header rows)
+    - away_team (str): Away team name (used to skip header rows)
+    Returns:
+    - Dict[str, float]: Dictionary with keys like "HomeCornersMade", "AwayFoulsMade", etc.
+    """
     out: Dict[str, float] = {}
     wrapper = find_team_stats_extra_node(soup)
     if not wrapper:
         return out
 
     def leaf_texts(grid):
+        """Extract text from leaf-level div elements (those without child divs)."""
         leafs = []
         for d in grid.find_all("div"):
-            if not d.find("div"):  # leaf
-                if "class" in d.attrs and "th" in d["class"]:
+            if not d.find("div"):  # leaf node (no children)
+                if "class" in d.attrs and "th" in d["class"]: # Table header row
                     continue  # skip team-name headers
                 t = _norm(d.get_text(" ", strip=True))
-                if t:
+                if t: # If text is not empty, add it to the list
                     leafs.append(t)
         return leafs
 
+    # Find all grid containers (or use wrapper if no grids found)
     grids = wrapper.select("div.grid") or [wrapper]
+    
     for grid in grids:
         tokens = leaf_texts(grid)
 
-        # remove first-row team names triplet if present
+        # Remove first-row team name headers if present (e.g., "Arsenal | Stats | Chelsea")
         if len(tokens) >= 3 and (
             home_team.lower() in tokens[0].lower() or away_team.lower() in tokens[2].lower()
         ):
             tokens = tokens[3:]
 
-        # Anchor on each label token; assign nearest numeric left/right
+        # Parse using label-anchored strategy
         for i, tok in enumerate(tokens):
+            # Skip tokens that are purely numeric (not labels)
             if not re.search(r"[A-Za-z]", tok):
                 continue
             base = _canon_label(tok)
             if not base:
                 continue
 
-            # left numeric
+            # Search left for home team's value
             j = i - 1
             left_num = None
             while j >= 0:
@@ -202,7 +307,7 @@ def parse_div_team_stats_extra(soup: BeautifulSoup, home_team: str, away_team: s
                     break
                 j -= 1
 
-            # right numeric
+            # Search right for away team's value
             k = i + 1
             right_num = None
             while k < len(tokens):
@@ -211,7 +316,7 @@ def parse_div_team_stats_extra(soup: BeautifulSoup, home_team: str, away_team: s
                     break
                 k += 1
 
-            # write once per label (first seen wins)
+            # Store values (first occurrence of each label wins, to avoid duplicates)
             if left_num is not None and f"Home{base}Made" not in out:
                 out[f"Home{base}Made"] = left_num
             if right_num is not None and f"Away{base}Made" not in out:
@@ -221,29 +326,73 @@ def parse_div_team_stats_extra(soup: BeautifulSoup, home_team: str, away_team: s
 
 # ---------- scrape one page ----------
 def scrape_one_report(url: str, home: str, away: str, sess: requests.Session, timeout: int = 40) -> Dict[str, float]:
+    """
+    Scrapes advanced statistics from a single FBref match report page.
+    
+    Combines data from both the main stats bar (div#team_stats) and 
+    the extra stats grid (div#team_stats_extra).
+    
+    Params:
+    - url (str): The full URL of the match report page
+    - home (str): Home team name
+    - away (str): Away team name
+    - sess (requests.Session): Session with retry logic and browser headers
+    - timeout (int): Request timeout in seconds (default: 40)
+    Returns:
+    - Dict[str, float]: Combined statistics dictionary
+    Raises:
+    - RuntimeError: If HTTP request fails or page is blocked by Cloudflare
+    """
     r = sess.get(url, timeout=timeout)
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code} for {url}")
+    
+    # Check for Cloudflare or other blocking mechanisms
     low = r.text.lower()
     if any(s in low for s in ("just a moment", "attention required", "cf-challenge", "cf-error")):
         raise RuntimeError("Blocked by interstitial (Cloudflare).")
+    
     soup = BeautifulSoup(r.text, "lxml")
 
+    # Parse main stats (possession, passing accuracy, shots on target, saves)
     stats: Dict[str, float] = {}
     stats.update(parse_div_team_stats(soup))
+    
+    # Parse extra stats (corners, fouls, crosses, etc.)
+    # Only add extra stats if they don't already exist in main stats
     extra = parse_div_team_stats_extra(soup, home, away)
     for k, v in extra.items():
         if k not in stats or stats[k] is None:
             stats[k] = v
+    
     return stats
 
 # ---------- season runner with checkpointing ----------
 def atomic_write_csv(df: pd.DataFrame, path: str) -> None:
+    """
+    Writes a CSV file atomically using a temporary file to prevent corruption.
+    
+    If the script crashes mid-write, the original file (if any) remains intact.
+    
+    Params:
+    - df (pd.DataFrame): DataFrame to save
+    - path (str): Target file path
+    """
     tmp = f"{path}.tmp"
     df.to_csv(tmp, index=False)
-    os.replace(tmp, path)
+    os.replace(tmp, path)  # Atomic operation on most filesystems
 
 def _normalize_keys(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalizes the key columns (Date, Home, Away) for reliable merging.
+    
+    Ensures team names are stripped of whitespace and dates are in UTC format.
+    
+    Params:
+    - df (pd.DataFrame): DataFrame with key columns
+    Returns:
+    - pd.DataFrame: DataFrame with normalized keys
+    """
     df = df.copy()
     df["Home"] = df["Home"].astype(str).str.strip()
     df["Away"] = df["Away"].astype(str).str.strip()
@@ -252,8 +401,20 @@ def _normalize_keys(df: pd.DataFrame) -> pd.DataFrame:
 
 def _filter_stats_cols(stats: pd.DataFrame) -> pd.DataFrame:
     """
-    Keep only keys + optional MatchReportUrl + stat columns (Home_*/Away_*),
-    but drop Home_xG/Away_xG from stats so schedule's xG remains source of truth.
+    Filters the stats DataFrame to keep only relevant columns.
+    
+    Keeps:
+    - Key columns: Date, Home, Away
+    - MatchReportUrl (if present)
+    - Stat columns starting with "Home_" or "Away_"
+    
+    Drops:
+    - Home_xG and Away_xG (we use xG from the base schedule instead)
+    
+    Params:
+    - stats (pd.DataFrame): Stats DataFrame from match reports
+    Returns:
+    - pd.DataFrame: Filtered DataFrame
     """
     keys = ["Date", "Home", "Away"]
     maybe_url = ["MatchReportUrl"] if "MatchReportUrl" in stats.columns else []
@@ -263,6 +424,14 @@ def _filter_stats_cols(stats: pd.DataFrame) -> pd.DataFrame:
     return stats[keep].copy()
 
 def _coalesce_matchreport(merged: pd.DataFrame) -> pd.DataFrame:
+    """
+    Consolidates MatchReport and MatchReportUrl columns into a single MatchReport column.
+    
+    Params:
+    - merged (pd.DataFrame): Merged DataFrame that may have both columns
+    Returns:
+    - pd.DataFrame: DataFrame with single MatchReport column
+    """
     if "MatchReport" in merged.columns and "MatchReportUrl" in merged.columns:
         merged["MatchReport"] = merged["MatchReport"].fillna(merged["MatchReportUrl"])
         merged = merged.drop(columns=["MatchReportUrl"])
@@ -271,7 +440,21 @@ def _coalesce_matchreport(merged: pd.DataFrame) -> pd.DataFrame:
     return merged
 
 def _clean_suffixes(merged: pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes pandas merge suffixes (_x, _y) from column names after merging.
+    
+    Strategy:
+    - If both base and base_x exist, drop base_x
+    - If only base_x exists, rename to base
+    - Same logic for _y suffix
+    
+    Params:
+    - merged (pd.DataFrame): DataFrame with potential _x/_y suffixes
+    Returns:
+    - pd.DataFrame: DataFrame with clean column names
+    """
     cols = list(merged.columns)
+    # Clean _x suffixes
     for c in cols:
         if c.endswith("_x"):
             base = c[:-2]
@@ -279,6 +462,8 @@ def _clean_suffixes(merged: pd.DataFrame) -> pd.DataFrame:
                 merged = merged.drop(columns=[c])
             else:
                 merged = merged.rename(columns={c: base})
+    
+    # Clean _y suffixes
     cols = list(merged.columns)
     for c in cols:
         if c.endswith("_y"):
@@ -290,6 +475,28 @@ def _clean_suffixes(merged: pd.DataFrame) -> pd.DataFrame:
     return merged
 
 def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every: int) -> None:
+    """
+    Main orchestrator: scrapes all match reports for a season with automatic checkpointing.
+    
+    Process:
+    1. Load base schedule from data/raw/matches_{season}.csv
+    2. Check for existing partial file (resume capability)
+    3. Scrape each match report URL with polite delays
+    4. Save checkpoints periodically to data/tmp/
+    5. Merge scraped stats with base schedule
+    6. Save final output to data/processed/matches_with_reports_{season}.csv
+    
+    Features:
+    - Auto-resume: Skips already-scraped matches if partial file exists
+    - Checkpointing: Saves progress every N matches to prevent data loss
+    - Safe merge: Handles column conflicts and deduplication
+    
+    Params:
+    - season (str): Season label, e.g., "2024-2025"
+    - delay_min (float): Minimum seconds to wait between requests
+    - delay_max (float): Maximum seconds to wait between requests
+    - checkpoint_every (int): Save partial file after this many successful scrapes (0 to disable)
+    """
     in_path = f"data/raw/matches_{season}.csv"
     out_dir = "data/processed"
     tmp_dir = "data/tmp"
@@ -309,7 +516,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     if url_col is None:
         raise ValueError("Schedule missing MatchReport/MatchReportUrl column")
 
-    # Load partial (if any) and build resume set by URL
+    # Load partial checkpoint file (if any) to enable resume capability
     partial_df = pd.DataFrame()
     done_urls = set()
     if os.path.exists(partial_path):
@@ -331,18 +538,19 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     successes = 0
     failures = 0
 
+    # Main scraping loop
     for _, r in sch.iterrows():
         url = r.get(url_col)
         if not isinstance(url, str) or not url:
-            continue
+            continue  # Skip matches without report URLs
 
         if url in done_urls:
             processed += 1
-            continue  # skip already scraped
+            continue  # Skip already-scraped matches (resume functionality)
 
         home, away = str(r["Home"]), str(r["Away"])
         print(f"[{season}] Fetching {home} vs {away} ({processed + 1}/{total})")
-        polite_sleep(delay_min, delay_max)
+        polite_sleep(delay_min, delay_max)  # Be polite to avoid being blocked
 
         try:
             stats = scrape_one_report(url, home, away, sess)
@@ -352,6 +560,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
             processed += 1
             continue
 
+        # Build row with match metadata + scraped stats
         row = {
             "Date": pd.to_datetime(r["Date"], utc=True, errors="coerce"),
             "Home": home,
@@ -366,12 +575,13 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
 
         print(f"[{season}] Parsed ✓ (ok={successes}, fail={failures})")
 
-        # Checkpoint every N successes
+        # Checkpoint: Save progress periodically
         if checkpoint_every > 0 and (successes % checkpoint_every == 0):
             ck_df = pd.concat([partial_df, pd.DataFrame(rows)], ignore_index=True) if not partial_df.empty else pd.DataFrame(rows)
             atomic_write_csv(ck_df, partial_path)
             print(f"[{season}] Checkpoint saved → {partial_path}  (rows={len(ck_df)})")
 
+        # Progress update
         if processed % 5 == 0:
             print(f"[{season}] Progress: {processed}/{total} | ok={successes} fail={failures}")
 
@@ -381,7 +591,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
         atomic_write_csv(ck_df, partial_path)
         print(f"[{season}] Final checkpoint saved → {partial_path}  (rows={len(ck_df)})")
 
-    # ---- SAFE MERGE STRATEGY (same as your merge_matches.py) ----
+    # ---- FINAL MERGE: Combine base schedule with scraped advanced stats ----
     if os.path.exists(partial_path):
         extra = pd.read_csv(partial_path, parse_dates=["Date"])
         extra = _normalize_keys(extra)
@@ -392,19 +602,23 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
         print(f"[{season}] No advanced stats parsed; saving schedule as-is.")
         features = sch.copy()
     else:
-        # keep only keys + URL + Home_/Away_ stats (drop xG from stats), dedupe
+        # Filter: Keep only keys + URL + stat columns (drop xG to avoid conflicts)
         extra_clean = _filter_stats_cols(extra)
+        
+        # Deduplicate: Keep last occurrence if same match was scraped multiple times
         before = len(extra_clean)
         extra_clean = extra_clean.drop_duplicates(subset=["Date", "Home", "Away"], keep="last")
         removed = before - len(extra_clean)
         if removed:
             print(f"[{season}] Deduped extra: removed {removed} duplicate rows on (Date,Home,Away)")
 
-        # merge
+        # Merge schedule with advanced stats (left join keeps all schedule rows)
         features = sch.merge(extra_clean, on=["Date", "Home", "Away"], how="left")
-        # coalesce MatchReport with URL, drop URL
+        
+        # Clean up: Consolidate MatchReport columns
         features = _coalesce_matchreport(features)
-        # scrub any lingering _x/_y
+        
+        # Clean up: Remove pandas merge suffixes (_x, _y)
         features = _clean_suffixes(features)
 
     atomic_write_csv(features, out_path)
@@ -413,11 +627,20 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
 
 # ---------- CLI ----------
 def main():
-    ap = argparse.ArgumentParser()
+    """
+    Command-line interface for running the match report scraper.
+    
+    Example usage:
+        python src/scraping/matches_adv.py --season 2024-2025 --checkpoint-every 10 --delay-min 8 --delay-max 14
+    """
+    ap = argparse.ArgumentParser(
+        description="Scrape advanced match statistics from FBref match report pages with checkpointing"
+    )
     ap.add_argument("--season", required=True, help="Season label, e.g. 2024-2025")
-    ap.add_argument("--delay-min", type=float, default=8.0)
-    ap.add_argument("--delay-max", type=float, default=14.0)
-    ap.add_argument("--checkpoint-every", type=int, default=10, help="Save partial after this many successes (0 to disable)")
+    ap.add_argument("--delay-min", type=float, default=8.0, help="Minimum delay between requests (seconds)")
+    ap.add_argument("--delay-max", type=float, default=14.0, help="Maximum delay between requests (seconds)")
+    ap.add_argument("--checkpoint-every", type=int, default=10, 
+                   help="Save partial after this many successes (0 to disable)")
     args = ap.parse_args()
 
     run_season(args.season, args.delay_min, args.delay_max, args.checkpoint_every)
