@@ -598,7 +598,7 @@ def refit_on_all_played(rf: RandomForestClassifier, *dfs: pd.DataFrame) -> Rando
 
 
 
-def plot_importances(rf, save_path="feature_importances.png", top_n=5):
+def plot_importances(rf, save_path="docs/feature_importances.png", top_n=10):
     try:
         import matplotlib
         matplotlib.use("Agg")  # non-GUI backend

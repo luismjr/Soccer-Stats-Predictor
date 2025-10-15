@@ -35,5 +35,5 @@ output:
   predictions: "data/upcoming_preds.csv"
   features: "data/upcoming_feature_rows.csv"
   feature_importance_plot: true
-  plot_path: "feature_importances.png"
+  plot_path: "docs/feature_importances.png"
 

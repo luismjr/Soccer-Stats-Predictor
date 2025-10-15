@@ -36,5 +36,5 @@ output:
   predictions: "data/upcoming_preds.csv"
   features: "data/upcoming_feature_rows.csv"  # Optional: set to null to skip
   feature_importance_plot: true  # Set to false to skip plotting
-  plot_path: "feature_importances.png"
+  plot_path: "docs/feature_importances_train.png"
 
