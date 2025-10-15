@@ -39,11 +39,11 @@
   </main>
 
   <footer class="max-w-5xl mx-auto px-4 pb-10 text-xs text-gray-500">
-    <p id="modelMeta">Model: Random Forest (CSV: data/upcoming_preds.csv)</p>
+    <p id="modelMeta">Model: Random Forest (CSV: data/prediction/prediction_data.csv)</p>
   </footer>
 
   <script>
-    const CSV_URL = "/data/upcoming_preds.csv"; // path to your file
+    const CSV_URL = "/data/prediction/prediction_data.csv"; // path to your file
     const statusEl = document.getElementById("status");
     const listEl = document.getElementById("list");
     const sortEl = document.getElementById("sort");
@@ -184,7 +184,7 @@
           },
           error: (err) => {
             console.error(err);
-            showStatus("Couldn’t parse /data/upcoming_preds.csv", "error");
+            showStatus("Couldn't parse /data/prediction/prediction_data.csv", "error");
           }
         });
       } catch (e) {

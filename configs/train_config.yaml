@@ -33,8 +33,8 @@ tuning:
 
 # Output settings
 output:
-  predictions: "data/upcoming_preds.csv"
-  features: "data/upcoming_feature_rows.csv"  # Optional: set to null to skip
+  predictions: "data/prediction/prediction_data.csv"
+  features: "data/prediction/prediction_features.csv"  # Optional: set to null to skip
   feature_importance_plot: true  # Set to false to skip plotting
   plot_path: "docs/feature_importances_train.png"
 
