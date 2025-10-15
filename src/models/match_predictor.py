@@ -598,7 +598,7 @@ def refit_on_all_played(rf: RandomForestClassifier, *dfs: pd.DataFrame) -> Rando
 
 
 
-def plot_importances(rf, save_path="feature_importances.png"):
+def plot_importances(rf, save_path="feature_importances.png", top_n=5):
     try:
         import matplotlib
         matplotlib.use("Agg")  # non-GUI backend
@@ -609,12 +609,15 @@ def plot_importances(rf, save_path="feature_importances.png"):
         return
 
     importances = pd.Series(rf.feature_importances_, index=PREDICTORS)
-    ax = importances.sort_values().plot(kind="barh", figsize=(8, 5))
-    ax.set_title("Feature Importances")
+    # Show only top N most important features
+    top_features = importances.nlargest(top_n)
+    ax = top_features.sort_values().plot(kind="barh", figsize=(8, 4))
+    ax.set_title(f"Top {top_n} Most Important Features")
+    ax.set_xlabel("Feature Importance")
     plt.tight_layout()
     plt.savefig(save_path, dpi=200, bbox_inches="tight")
     plt.close()
-    print(f"Saved feature importances → {save_path}")
+    print(f"Saved top {top_n} feature importances → {save_path}")
 
 
 # =========================
