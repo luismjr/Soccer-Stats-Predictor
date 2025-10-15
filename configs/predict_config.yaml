@@ -5,7 +5,7 @@
 
 # Data sources
 data:
-  glob: "data/processed/matches_with_reports_*.csv"
+  glob: "data/processed/match/match_stats_*.csv"
 
 # Season configuration - Use ALL data for training
 seasons:

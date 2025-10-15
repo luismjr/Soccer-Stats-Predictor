@@ -9,7 +9,7 @@ Parses:
 Features:
   • Checkpoint every N matches → data/tmp/match_reports_{SEASON}_partial.csv
   • Auto-resume: skips matches already in the partial
-  • Final output → data/processed/matches_with_reports_{SEASON}.csv
+  • Final output → data/processed/match/match_stats_{SEASON}.csv
 
 Usage:
   python src/scraping/matches_adv.py --season 2024-2025 --checkpoint-every 10 \
@@ -487,7 +487,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     3. Scrape each match report URL with polite delays
     4. Save checkpoints periodically to data/tmp/
     5. Merge scraped stats with base schedule
-    6. Save final output to data/processed/matches_with_reports_{season}.csv
+    6. Save final output to data/processed/match/match_stats_{season}.csv
     
     Features:
     - Auto-resume: Skips already-scraped matches if partial file exists
@@ -501,12 +501,12 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     - checkpoint_every (int): Save partial file after this many successful scrapes (0 to disable)
     """
     in_path = f"data/raw/match/match_stats_{season}.csv"
-    out_dir = "data/processed"
+    out_dir = "data/processed/match"
     tmp_dir = "data/tmp"
     os.makedirs(out_dir, exist_ok=True)
     os.makedirs(tmp_dir, exist_ok=True)
 
-    out_path = os.path.join(out_dir, f"matches_with_reports_{season}.csv")
+    out_path = os.path.join(out_dir, f"match_stats_{season}.csv")
     partial_path = os.path.join(tmp_dir, f"match_reports_{season}_partial.csv")
 
     if not os.path.exists(in_path):

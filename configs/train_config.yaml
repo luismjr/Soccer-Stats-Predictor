@@ -3,11 +3,11 @@
 
 # Data sources
 data:
-  glob: "data/processed/matches_with_reports_*.csv"
+  glob: "data/processed/match/match_stats_*.csv"
   # Alternative: specify files explicitly
   # files:
-  #   - "data/processed/matches_with_reports_2021-2022.csv"
-  #   - "data/processed/matches_with_reports_2022-2023.csv"
+  #   - "data/processed/match/match_stats_2021-2022.csv"
+  #   - "data/processed/match/match_stats_2022-2023.csv"
 
 # Season configuration
 seasons:
