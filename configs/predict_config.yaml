@@ -1,0 +1,39 @@
+# Configuration for Soccer Stats Predictor - PRODUCTION PREDICTIONS
+# ====================================================================
+# This config uses ALL available historical data to make predictions
+# on upcoming fixtures (no holdout for validation/testing)
+
+# Data sources
+data:
+  glob: "data/processed/matches_with_reports_*.csv"
+
+# Season configuration - Use ALL data for training
+seasons:
+  train:
+    - "2021-2022"
+    - "2022-2023"
+    - "2023-2024"
+    - "2024-2025"  # Include previous season for more recent data
+  val: "2025-2026"  # Use current season for validation (only completed matches)
+  test: "2025-2026"  # Make predictions on current season's upcoming matches
+
+# Model hyperparameters
+model:
+  n_estimators: 600
+  min_samples_split: 14
+  min_samples_leaf: 3
+  random_state: 42
+
+# Threshold tuning - DISABLED for balanced predictions
+tuning:
+  use_thresholds: false  # Disable to avoid fallback bias
+  no_thresholds: true    # Use plain argmax (picks highest probability)
+  fallback_class: null   # Not used when no_thresholds=true
+
+# Output settings
+output:
+  predictions: "data/upcoming_preds.csv"
+  features: "data/upcoming_feature_rows.csv"
+  feature_importance_plot: true
+  plot_path: "feature_importances.png"
+

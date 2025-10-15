@@ -1,0 +1,40 @@
+# Configuration for Soccer Stats Predictor Training
+# ===================================================
+
+# Data sources
+data:
+  glob: "data/processed/matches_with_reports_*.csv"
+  # Alternative: specify files explicitly
+  # files:
+  #   - "data/processed/matches_with_reports_2021-2022.csv"
+  #   - "data/processed/matches_with_reports_2022-2023.csv"
+
+# Season configuration
+seasons:
+  train:
+    - "2021-2022"
+    - "2022-2023"
+    - "2023-2024"
+  val: "2024-2025"
+  test: "2025-2026"
+
+# Model hyperparameters
+model:
+  n_estimators: 600
+  min_samples_split: 14
+  min_samples_leaf: 3
+  random_state: 42
+
+# Threshold tuning
+tuning:
+  use_thresholds: true   # Set to false to disable threshold optimization
+  no_thresholds: true   # Set to true to use plain argmax (simpler, no fallback bias)
+  fallback_class: 2      # 0=Away Win, 1=Draw, 2=Home Win (use when uncertain and use_thresholds=true)
+
+# Output settings
+output:
+  predictions: "data/upcoming_preds.csv"
+  features: "data/upcoming_feature_rows.csv"  # Optional: set to null to skip
+  feature_importance_plot: true  # Set to false to skip plotting
+  plot_path: "feature_importances.png"
+
