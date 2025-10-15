@@ -482,7 +482,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     Main orchestrator: scrapes all match reports for a season with automatic checkpointing.
     
     Process:
-    1. Load base schedule from data/raw/matches_{season}.csv
+    1. Load base schedule from data/raw/match/match_stats_{season}.csv
     2. Check for existing partial file (resume capability)
     3. Scrape each match report URL with polite delays
     4. Save checkpoints periodically to data/tmp/
@@ -500,7 +500,7 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
     - delay_max (float): Maximum seconds to wait between requests
     - checkpoint_every (int): Save partial file after this many successful scrapes (0 to disable)
     """
-    in_path = f"data/raw/matches_{season}.csv"
+    in_path = f"data/raw/match/match_stats_{season}.csv"
     out_dir = "data/processed"
     tmp_dir = "data/tmp"
     os.makedirs(out_dir, exist_ok=True)

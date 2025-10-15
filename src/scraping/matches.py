@@ -369,13 +369,13 @@ if __name__ == "__main__":
     all_matches = fetch_pl_matches_many(years, delay_sec=2.5)
 
     # Create the output directory if it doesn't exist
-    out_dir = Path("data/raw")
+    out_dir = Path("data/raw/match")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # Save per-season and combined
     for y in years:
         sl = season_label(y)
-        all_matches[all_matches["Season"] == sl].to_csv(out_dir / f"matches_{sl}.csv", index=False)
+        all_matches[all_matches["Season"] == sl].to_csv(out_dir / f"match_stats_{sl}.csv", index=False)
 
-    all_matches.to_csv(out_dir / "matches_last5.csv", index=False)
+    all_matches.to_csv(out_dir / "match_stats_last5.csv", index=False)
     print("Saved:", out_dir.resolve())

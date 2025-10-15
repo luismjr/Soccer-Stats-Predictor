@@ -349,12 +349,5 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# data
-data/raw/*
-data/processed/*
-data/tmp/*
-data/upcoming_feature_rows.csv
-data/upcoming_preds.csv
-
 # macOS system files
 .DS_Store
