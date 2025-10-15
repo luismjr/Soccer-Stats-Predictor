@@ -418,8 +418,11 @@ def _filter_stats_cols(stats: pd.DataFrame) -> pd.DataFrame:
     """
     keys = ["Date", "Home", "Away"]
     maybe_url = ["MatchReportUrl"] if "MatchReportUrl" in stats.columns else []
-    stat_cols = [c for c in stats.columns if c.startswith("Home_") or c.startswith("Away_")]
-    stat_cols = [c for c in stat_cols if c not in ("Home_xG", "Away_xG")]
+    # Match columns starting with "Home" or "Away" (without underscore requirement)
+    # But exclude the key columns "Home" and "Away" themselves
+    stat_cols = [c for c in stats.columns 
+                 if (c.startswith("Home") or c.startswith("Away")) 
+                 and c not in ("Home", "Away", "HomexG", "AwayxG")]
     keep = [c for c in (keys + maybe_url + stat_cols) if c in stats.columns]
     return stats[keep].copy()
 
@@ -528,9 +531,15 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
         except Exception as e:
             print(f"[{season}] Warning: failed to read partial ({e}). Starting fresh.")
 
-    # Prepare loop
-    total = int(sch[url_col].notna().sum())
-    print(f"[{season}] Will process {total} matches with report URLs.")
+    # Prepare loop - count only completed matches (with scores and match report URLs)
+    completed_mask = (
+        sch[url_col].notna() & 
+        sch[url_col].str.contains("/matches/", na=False) &
+        sch["Score"].notna() &
+        (sch["Score"].astype(str).str.strip() != "")
+    )
+    total = int(completed_mask.sum())
+    print(f"[{season}] Will process {total} completed matches (skipping {int(sch[url_col].notna().sum()) - total} future matches).")
     sess = make_session()
     rows: List[Dict] = []
 
@@ -543,6 +552,15 @@ def run_season(season: str, delay_min: float, delay_max: float, checkpoint_every
         url = r.get(url_col)
         if not isinstance(url, str) or not url:
             continue  # Skip matches without report URLs
+
+        # Skip uncompleted matches (they have history URLs instead of match report URLs)
+        if "/stathead/matchup/" in url or "/matches/" not in url:
+            continue  # Skip future/uncompleted matches
+        
+        # Additional check: skip if no score (match not played yet)
+        score = r.get("Score")
+        if pd.isna(score) or str(score).strip() == "":
+            continue  # Skip matches without scores
 
         if url in done_urls:
             processed += 1
