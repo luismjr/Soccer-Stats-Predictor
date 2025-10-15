@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 # =========================
 # Feature engineering
+# This is where we engineer the features that will be used to train the model.
 # =========================
-
 def prepare_basic_features(
     df: pd.DataFrame,
     *,
@@ -38,33 +38,33 @@ def prepare_basic_features(
         raise ValueError("Expected 'Time' column like '12:30'")
     parsed_time = pd.to_datetime(out["Time"], format="%H:%M", errors="coerce")
 
-    out["minutes_since_midnight"] = parsed_time.dt.hour * 60 + parsed_time.dt.minute
-    if out["minutes_since_midnight"].isna().any():
-        logging.warning("Some times could not be parsed; filling minutes_since_midnight with -1.")
-        out["minutes_since_midnight"] = out["minutes_since_midnight"].fillna(-1).astype(int)
+    out["MinutesSinceMidnight"] = parsed_time.dt.hour * 60 + parsed_time.dt.minute
+    if out["MinutesSinceMidnight"].isna().any():
+        logging.warning("Some times could not be parsed; filling MinutesSinceMidnight with -1.")
+        out["MinutesSinceMidnight"] = out["MinutesSinceMidnight"].fillna(-1).astype(int)
     else:
-        out["minutes_since_midnight"] = out["minutes_since_midnight"].astype(int)
+        out["MinutesSinceMidnight"] = out["MinutesSinceMidnight"].astype(int)
 
-    out["hour"] = parsed_time.dt.hour.fillna(-1).astype(int)
-    out["hour_cat"] = out["hour"].astype("category")
+    out["Hour"] = parsed_time.dt.hour.fillna(-1).astype(int)
+    out["HourCat"] = out["Hour"].astype("category")
 
     # --- Opponent / Home / Venue ---
     if "Away" not in out.columns:
         raise ValueError("Expected 'Away' column for opponent")
-    out["opp_code"] = out["Away"].astype("category").cat.codes
+    out["OppCode"] = out["Away"].astype("category").cat.codes
 
     if "Home" in out.columns:
-        out["home_code"] = out["Home"].astype("category").cat.codes
+        out["HomeCode"] = out["Home"].astype("category").cat.codes
     else:
-        out["home_code"] = -1
+        out["HomeCode"] = -1
 
     if "Venue" in out.columns:
-        out["venue_code"] = out["Venue"].astype("category").cat.codes
+        out["VenueCode"] = out["Venue"].astype("category").cat.codes
     else:
-        out["venue_code"] = -1
+        out["VenueCode"] = -1
 
     # --- Day of week ---
-    out["day_code"] = out["Date"].dt.dayofweek  # Mon=0 .. Sun=6
+    out["DayCode"] = out["Date"].dt.dayofweek  # Mon=0 .. Sun=6
 
     # rolling recent form
     out = add_home_recent_form(out, window=5)
@@ -121,23 +121,23 @@ def add_home_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
 
     cols = {
         # for (home made)
-        "Home_xG": "xG_l5",
-        "HomeGoals": "G_l5",
-        "Home_ShotsOnTarget_Made": "ShotsOnTarget_l5",
-        "Home_Saves_Made": "Saves_l5",
-        "Home_Tackles_Made": "Tackles_l5",
-        "Home_Crosses_Made": "Crosses_l5",
-        "Home_Touches_Made": "Touches_l5",
-        "Home_LongBalls_Made": "Longballs_l5",
+        "Home_xG": "xG_L5",
+        "HomeGoals": "G_L5",
+        "Home_ShotsOnTarget_Made": "ShotsOnTarget_L5",
+        "Home_Saves_Made": "Saves_L5",
+        "Home_Tackles_Made": "Tackles_L5",
+        "Home_Crosses_Made": "Crosses_L5",
+        "Home_Touches_Made": "Touches_L5",
+        "Home_LongBalls_Made": "LongBalls_L5",
 
         # against (conceded by home)
-        "Home_xGA": "xGA_l5",
-        "Home_GA": "GA_l5",
-        "ShotsOnTargetConceded": "ShotsOnTargetA_l5",
-        "TacklesConceded": "TacklesA_l5",
-        "CrossesConceded": "CrossesA_l5",
-        "TouchesConceded": "TouchesA_l5",
-        "LongBallsConceded": "LongballsA_l5",
+        "Home_xGA": "xGA_L5",
+        "Home_GA": "GA_L5",
+        "ShotsOnTargetConceded": "ShotsOnTargetA_L5",
+        "TacklesConceded": "TacklesA_L5",
+        "CrossesConceded": "CrossesA_L5",
+        "TouchesConceded": "TouchesA_L5",
+        "LongBallsConceded": "LongBallsA_L5",
     }
 
     for c in cols:
@@ -189,21 +189,21 @@ def add_away_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         out["A_LongBallsConceded"] = pd.to_numeric(out["Home_LongBalls_Made"], errors="coerce")
 
     cols = {
-        "Away_xG": "away_xG_l5",
-        "AwayGoals": "away_G_l5",
-        "Away_ShotsOnTarget_Made": "away_ShotsOnTarget_l5",
-        "Away_Saves_Made": "away_Saves_l5",
-        "Away_Tackles_Made": "away_Tackles_l5",
-        "Away_Crosses_Made": "away_Crosses_l5",
-        "Away_Touches_Made": "away_Touches_l5",
-        "Away_LongBalls_Made": "away_Longballs_l5",
-        "Away_xGA": "away_xGA_l5",
-        "Away_GA": "away_GA_l5",
-        "A_ShotsOnTargetConceded": "away_ShotsOnTargetA_l5",
-        "A_TacklesConceded": "away_TacklesA_l5",
-        "A_CrossesConceded": "away_CrossesA_l5",
-        "A_TouchesConceded": "away_TouchesA_l5",
-        "A_LongBallsConceded": "away_LongballsA_l5",
+        "Away_xG": "Away_xG_L5",
+        "AwayGoals": "Away_G_L5",
+        "Away_ShotsOnTarget_Made": "Away_ShotsOnTarget_L5",
+        "Away_Saves_Made": "Away_Saves_L5",
+        "Away_Tackles_Made": "Away_Tackles_L5",
+        "Away_Crosses_Made": "Away_Crosses_L5",
+        "Away_Touches_Made": "Away_Touches_L5",
+        "Away_LongBalls_Made": "Away_LongBalls_L5",
+        "Away_xGA": "Away_xGA_L5",
+        "Away_GA": "Away_GA_L5",
+        "A_ShotsOnTargetConceded": "Away_ShotsOnTargetA_L5",
+        "A_TacklesConceded": "Away_TacklesA_L5",
+        "A_CrossesConceded": "Away_CrossesA_L5",
+        "A_TouchesConceded": "Away_TouchesA_L5",
+        "A_LongBallsConceded": "Away_LongBallsA_L5",
     }
 
     for c in cols:
@@ -259,7 +259,7 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         "Tackles": pd.to_numeric(out.get("Home_Tackles_Made"), errors="coerce"),
         "Crosses": pd.to_numeric(out.get("Home_Crosses_Made"), errors="coerce"),
         "Touches": pd.to_numeric(out.get("Home_Touches_Made"), errors="coerce"),
-        "Longballs": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
+        "LongBalls": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
 
         "xGA": pd.to_numeric(out.get("Home_xGA"), errors="coerce"),
         "GA": pd.to_numeric(out.get("Home_GA"), errors="coerce"),
@@ -267,7 +267,7 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         "TacklesA": pd.to_numeric(out.get("Away_Tackles_Made"), errors="coerce"),
         "CrossesA": pd.to_numeric(out.get("Away_Crosses_Made"), errors="coerce"),
         "TouchesA": pd.to_numeric(out.get("Away_Touches_Made"), errors="coerce"),
-        "LongballsA": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
+        "LongBallsA": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
     })
 
     away_part = pd.DataFrame({
@@ -280,7 +280,7 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         "Tackles": pd.to_numeric(out.get("Away_Tackles_Made"), errors="coerce"),
         "Crosses": pd.to_numeric(out.get("Away_Crosses_Made"), errors="coerce"),
         "Touches": pd.to_numeric(out.get("Away_Touches_Made"), errors="coerce"),
-        "Longballs": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
+        "LongBalls": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
 
         "xGA": pd.to_numeric(out.get("Away_xGA"), errors="coerce"),
         "GA": pd.to_numeric(out.get("Away_GA"), errors="coerce"),
@@ -288,14 +288,14 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         "TacklesA": pd.to_numeric(out.get("Home_Tackles_Made"), errors="coerce"),
         "CrossesA": pd.to_numeric(out.get("Home_Crosses_Made"), errors="coerce"),
         "TouchesA": pd.to_numeric(out.get("Home_Touches_Made"), errors="coerce"),
-        "LongballsA": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
+        "LongBallsA": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
     })
 
     long_df = pd.concat([home_part, away_part], ignore_index=True)
     long_df = long_df.sort_values(["team", "Date"]).reset_index(drop=True)
 
-    base_feats = ["xG","G","ShotsOnTarget","Saves","Tackles","Crosses","Touches","Longballs",
-                  "xGA","GA","ShotsOnTargetA","TacklesA","CrossesA","TouchesA","LongballsA"]
+    base_feats = ["xG","G","ShotsOnTarget","Saves","Tackles","Crosses","Touches","LongBalls",
+                  "xGA","GA","ShotsOnTargetA","TacklesA","CrossesA","TouchesA","LongBallsA"]
 
     # Rolling means over previous matches (shift(1) prevents leakage)
     rolled = {}
@@ -313,14 +313,14 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
 
     # Merge back for HOME team rows
     home_cols = [c for c in long_roll.columns if c.endswith("_overall_l5")]
-    home_merge = long_roll.rename(columns={c: f"home_overall_{c[:-11]}_l5" for c in home_cols})
+    home_merge = long_roll.rename(columns={c: f"HomeOverall_{c[:-11]}_L5" for c in home_cols})
     out = out.merge(
         home_merge.rename(columns={"team": "Home", "Date": "Date"}),
         on=["Home", "Date"], how="left"
     )
 
     # Merge back for AWAY team rows
-    away_merge = long_roll.rename(columns={c: f"away_overall_{c[:-11]}_l5" for c in home_cols})
+    away_merge = long_roll.rename(columns={c: f"AwayOverall_{c[:-11]}_L5" for c in home_cols})
     out = out.merge(
         away_merge.rename(columns={"team": "Away", "Date": "Date"}),
         on=["Away", "Date"], how="left"
@@ -426,37 +426,38 @@ def season_split(
 # =========================
 PREDICTORS = [
     # timing / ids
-    "minutes_since_midnight", "hour",
-    "opp_code", "home_code", "venue_code", "day_code",
+    "MinutesSinceMidnight", "Hour",
+    "OppCode", "HomeCode", "VenueCode", "DayCode",
 
     # recent HOME form (for)
-    "xG_l5", "G_l5", "ShotsOnTarget_l5", "Saves_l5",
-    "Tackles_l5", "Crosses_l5", "Touches_l5", "Longballs_l5",
+    "xG_L5", "G_L5", "ShotsOnTarget_L5", "Saves_L5",
+    "Tackles_L5", "Crosses_L5", "Touches_L5", "LongBalls_L5",
 
     # recent HOME form (against)
-    "xGA_l5", "GA_l5", "ShotsOnTargetA_l5", "TacklesA_l5",
-    "CrossesA_l5", "TouchesA_l5", "LongballsA_l5",
+    "xGA_L5", "GA_L5", "ShotsOnTargetA_L5", "TacklesA_L5",
+    "CrossesA_L5", "TouchesA_L5", "LongBallsA_L5",
 
     # overall recent form (home team)
-    "home_overall_xG_l5", "home_overall_G_l5", "home_overall_ShotsOnTarget_l5",
-    "home_overall_Saves_l5", "home_overall_Tackles_l5", "home_overall_Crosses_l5",
-    "home_overall_Touches_l5", "home_overall_Longballs_l5",
-    "home_overall_xGA_l5", "home_overall_GA_l5", "home_overall_ShotsOnTargetA_l5",
-    "home_overall_TacklesA_l5", "home_overall_CrossesA_l5",
-    "home_overall_TouchesA_l5", "home_overall_LongballsA_l5",
+    "HomeOverall_xG_L5", "HomeOverall_G_L5", "HomeOverall_ShotsOnTarget_L5",
+    "HomeOverall_Saves_L5", "HomeOverall_Tackles_L5", "HomeOverall_Crosses_L5",
+    "HomeOverall_Touches_L5", "HomeOverall_LongBalls_L5",
+    "HomeOverall_xGA_L5", "HomeOverall_GA_L5", "HomeOverall_ShotsOnTargetA_L5",
+    "HomeOverall_TacklesA_L5", "HomeOverall_CrossesA_L5",
+    "HomeOverall_TouchesA_L5", "HomeOverall_LongBallsA_L5",
 
     # overall recent form (away team)
-    "away_overall_xG_l5", "away_overall_G_l5", "away_overall_ShotsOnTarget_l5",
-    "away_overall_Saves_l5", "away_overall_Tackles_l5", "away_overall_Crosses_l5",
-    "away_overall_Touches_l5", "away_overall_Longballs_l5",
-    "away_overall_xGA_l5", "away_overall_GA_l5", "away_overall_ShotsOnTargetA_l5",
-    "away_overall_TacklesA_l5", "away_overall_CrossesA_l5",
-    "away_overall_TouchesA_l5", "away_overall_LongballsA_l5",
+    "AwayOverall_xG_L5", "AwayOverall_G_L5", "AwayOverall_ShotsOnTarget_L5",
+    "AwayOverall_Saves_L5", "AwayOverall_Tackles_L5", "AwayOverall_Crosses_L5",
+    "AwayOverall_Touches_L5", "AwayOverall_LongBalls_L5",
+    "AwayOverall_xGA_L5", "AwayOverall_GA_L5", "AwayOverall_ShotsOnTargetA_L5",
+    "AwayOverall_TacklesA_L5", "AwayOverall_CrossesA_L5",
+    "AwayOverall_TouchesA_L5", "AwayOverall_LongBallsA_L5",
 
-    "away_xG_l5", "away_G_l5", "away_ShotsOnTarget_l5", "away_Saves_l5",
-    "away_Tackles_l5", "away_Crosses_l5", "away_Touches_l5", "away_Longballs_l5",
-    "away_xGA_l5", "away_GA_l5", "away_ShotsOnTargetA_l5", "away_TacklesA_l5",
-    "away_CrossesA_l5", "away_TouchesA_l5", "away_LongballsA_l5",
+    # venue-specific away form
+    "Away_xG_L5", "Away_G_L5", "Away_ShotsOnTarget_L5", "Away_Saves_L5",
+    "Away_Tackles_L5", "Away_Crosses_L5", "Away_Touches_L5", "Away_LongBalls_L5",
+    "Away_xGA_L5", "Away_GA_L5", "Away_ShotsOnTargetA_L5", "Away_TacklesA_L5",
+    "Away_CrossesA_L5", "Away_TouchesA_L5", "Away_LongBallsA_L5",
 ]
 
 LABEL_MAP = {0: "Away Win", 1: "Draw", 2: "Home Win"}
