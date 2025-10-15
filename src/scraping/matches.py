@@ -1,6 +1,7 @@
 """
 Fetches basic Premier League match-level data from FBref.
 Data is used to build features for the model.
+Running this file refetches all data.
 """
 
 import re
