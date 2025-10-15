@@ -1,17 +1,26 @@
 import argparse
 import glob
 import logging
-from typing import List, Optional, Tuple
+from pathlib import Path
+from typing import List, Optional, Tuple, Dict, Any
 
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, precision_score
-from zoneinfo import ZoneInfo  # NEW
+from zoneinfo import ZoneInfo
 
-UK_TZ = ZoneInfo("Europe/London")  # NEW
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+UK_TZ = ZoneInfo("Europe/London")
+
+# Set to WARNING to reduce verbosity - only shows warnings, errors, and print statements
+# Change to logging.INFO for detailed debugging
+logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
 
 
 # =========================
@@ -67,13 +76,13 @@ def prepare_basic_features(
     out["DayCode"] = out["Date"].dt.dayofweek  # Mon=0 .. Sun=6
 
     # rolling recent form
-    out = add_home_recent_form(out, window=5)
+    out = add_home_recent_form(out, window=3)  # Last 3 home games
 
-    # ⛔️ Commented out per request: away recent form (venue-specific)
-    out = add_away_recent_form(out, window=5)
+    # Away team recent form (venue-specific - last 3 away games only)
+    out = add_away_recent_form(out, window=3)  # Last 3 away games
 
-    # keep overall form (regardless of venue) for both teams
-    out = add_overall_recent_form(out, window=5)
+    # Overall form for both teams (regardless of venue - all games)
+    out = add_overall_recent_form(out, window=5)  # Last 5 games overall
 
     # --- Target: 2=HomeWin, 1=Draw, 0=HomeLoss ---
     if "HomeGoals" not in out.columns or "AwayGoals" not in out.columns:
@@ -98,37 +107,37 @@ def prepare_basic_features(
 
 def add_home_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
     # derive conceded versions if missing
-    if "Home_xGA" not in out.columns and "Away_xG" in out.columns:
-        out["Home_xGA"] = pd.to_numeric(out["Away_xG"], errors="coerce")
+    if "Home_xGA" not in out.columns and "AwayxG" in out.columns:
+        out["Home_xGA"] = pd.to_numeric(out["AwayxG"], errors="coerce")
 
     if "Home_GA" not in out.columns and "AwayGoals" in out.columns:
         out["Home_GA"] = pd.to_numeric(out["AwayGoals"], errors="coerce")
 
-    if "CrossesConceded" not in out.columns and "Away_Crosses_Made" in out.columns:
-        out["CrossesConceded"] = pd.to_numeric(out["Away_Crosses_Made"], errors="coerce")
+    if "CrossesConceded" not in out.columns and "AwayCrossesMade" in out.columns:
+        out["CrossesConceded"] = pd.to_numeric(out["AwayCrossesMade"], errors="coerce")
 
-    if "ShotsOnTargetConceded" not in out.columns and "Away_ShotsOnTarget_Made" in out.columns:
-        out["ShotsOnTargetConceded"] = pd.to_numeric(out["Away_ShotsOnTarget_Made"], errors="coerce")
+    if "ShotsOnTargetConceded" not in out.columns and "AwayShotsOnTargetMade" in out.columns:
+        out["ShotsOnTargetConceded"] = pd.to_numeric(out["AwayShotsOnTargetMade"], errors="coerce")
 
-    if "LongBallsConceded" not in out.columns and "Away_LongBalls_Made" in out.columns:
-        out["LongBallsConceded"] = pd.to_numeric(out["Away_LongBalls_Made"], errors="coerce")
+    if "LongBallsConceded" not in out.columns and "AwayLongBallsMade" in out.columns:
+        out["LongBallsConceded"] = pd.to_numeric(out["AwayLongBallsMade"], errors="coerce")
 
-    if "TouchesConceded" not in out.columns and "Away_Touches_Made" in out.columns:
-        out["TouchesConceded"] = pd.to_numeric(out["Away_Touches_Made"], errors="coerce")
+    if "TouchesConceded" not in out.columns and "AwayTouchesMade" in out.columns:
+        out["TouchesConceded"] = pd.to_numeric(out["AwayTouchesMade"], errors="coerce")
 
-    if "TacklesConceded" not in out.columns and "Away_Tackles_Made" in out.columns:
-        out["TacklesConceded"] = pd.to_numeric(out["Away_Tackles_Made"], errors="coerce")
+    if "TacklesConceded" not in out.columns and "AwayTacklesMade" in out.columns:
+        out["TacklesConceded"] = pd.to_numeric(out["AwayTacklesMade"], errors="coerce")
 
     cols = {
         # for (home made)
-        "Home_xG": "xG_L5",
+        "HomexG": "xG_L5",
         "HomeGoals": "G_L5",
-        "Home_ShotsOnTarget_Made": "ShotsOnTarget_L5",
-        "Home_Saves_Made": "Saves_L5",
-        "Home_Tackles_Made": "Tackles_L5",
-        "Home_Crosses_Made": "Crosses_L5",
-        "Home_Touches_Made": "Touches_L5",
-        "Home_LongBalls_Made": "LongBalls_L5",
+        "HomeShotsOnTargetMade": "ShotsOnTarget_L5",
+        "HomeSavesMade": "Saves_L5",
+        "HomeTacklesMade": "Tackles_L5",
+        "HomeCrossesMade": "Crosses_L5",
+        "HomeTouchesMade": "Touches_L5",
+        "HomeLongBallsMade": "LongBalls_L5",
 
         # against (conceded by home)
         "Home_xGA": "xGA_L5",
@@ -166,37 +175,37 @@ def add_home_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
     return out
 
 
-# (kept for reference; not used since we commented out the call)
 def add_away_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
     """
-    Rolling means over the away team's last N *away* matches
-    (not used right now; left here commented-out for easy re-enable).
+    Rolling means over the away team's last N *away* matches.
+    Creates features like Away_xG_L5, Away_G_L5, Away_GA_L5, etc.
+    based ONLY on the away team's recent away game performance.
     """
-    if "Away_xGA" not in out.columns and "Home_xG" in out.columns:
-        out["Away_xGA"] = pd.to_numeric(out["Home_xG"], errors="coerce")
+    if "Away_xGA" not in out.columns and "HomexG" in out.columns:
+        out["Away_xGA"] = pd.to_numeric(out["HomexG"], errors="coerce")
     if "Away_GA" not in out.columns and "HomeGoals" in out.columns:
         out["Away_GA"] = pd.to_numeric(out["HomeGoals"], errors="coerce")
 
-    if "A_ShotsOnTargetConceded" not in out.columns and "Home_ShotsOnTarget_Made" in out.columns:
-        out["A_ShotsOnTargetConceded"] = pd.to_numeric(out["Home_ShotsOnTarget_Made"], errors="coerce")
-    if "A_TacklesConceded" not in out.columns and "Home_Tackles_Made" in out.columns:
-        out["A_TacklesConceded"] = pd.to_numeric(out["Home_Tackles_Made"], errors="coerce")
-    if "A_CrossesConceded" not in out.columns and "Home_Crosses_Made" in out.columns:
-        out["A_CrossesConceded"] = pd.to_numeric(out["Home_Crosses_Made"], errors="coerce")
-    if "A_TouchesConceded" not in out.columns and "Home_Touches_Made" in out.columns:
-        out["A_TouchesConceded"] = pd.to_numeric(out["Home_Touches_Made"], errors="coerce")
-    if "A_LongBallsConceded" not in out.columns and "Home_LongBalls_Made" in out.columns:
-        out["A_LongBallsConceded"] = pd.to_numeric(out["Home_LongBalls_Made"], errors="coerce")
+    if "A_ShotsOnTargetConceded" not in out.columns and "HomeShotsOnTargetMade" in out.columns:
+        out["A_ShotsOnTargetConceded"] = pd.to_numeric(out["HomeShotsOnTargetMade"], errors="coerce")
+    if "A_TacklesConceded" not in out.columns and "HomeTacklesMade" in out.columns:
+        out["A_TacklesConceded"] = pd.to_numeric(out["HomeTacklesMade"], errors="coerce")
+    if "A_CrossesConceded" not in out.columns and "HomeCrossesMade" in out.columns:
+        out["A_CrossesConceded"] = pd.to_numeric(out["HomeCrossesMade"], errors="coerce")
+    if "A_TouchesConceded" not in out.columns and "HomeTouchesMade" in out.columns:
+        out["A_TouchesConceded"] = pd.to_numeric(out["HomeTouchesMade"], errors="coerce")
+    if "A_LongBallsConceded" not in out.columns and "HomeLongBallsMade" in out.columns:
+        out["A_LongBallsConceded"] = pd.to_numeric(out["HomeLongBallsMade"], errors="coerce")
 
     cols = {
-        "Away_xG": "Away_xG_L5",
+        "AwayxG": "Away_xG_L5",
         "AwayGoals": "Away_G_L5",
-        "Away_ShotsOnTarget_Made": "Away_ShotsOnTarget_L5",
-        "Away_Saves_Made": "Away_Saves_L5",
-        "Away_Tackles_Made": "Away_Tackles_L5",
-        "Away_Crosses_Made": "Away_Crosses_L5",
-        "Away_Touches_Made": "Away_Touches_L5",
-        "Away_LongBalls_Made": "Away_LongBalls_L5",
+        "AwayShotsOnTargetMade": "Away_ShotsOnTarget_L5",
+        "AwaySavesMade": "Away_Saves_L5",
+        "AwayTacklesMade": "Away_Tackles_L5",
+        "AwayCrossesMade": "Away_Crosses_L5",
+        "AwayTouchesMade": "Away_Touches_L5",
+        "AwayLongBallsMade": "Away_LongBalls_L5",
         "Away_xGA": "Away_xGA_L5",
         "Away_GA": "Away_GA_L5",
         "A_ShotsOnTargetConceded": "Away_ShotsOnTargetA_L5",
@@ -238,10 +247,10 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
     out = out.copy()
 
     # Ensure conceded columns exist for mapping (fallbacks if not present)
-    if "Home_xGA" not in out.columns and "Away_xG" in out.columns:
-        out["Home_xGA"] = pd.to_numeric(out["Away_xG"], errors="coerce")
-    if "Away_xGA" not in out.columns and "Home_xG" in out.columns:
-        out["Away_xGA"] = pd.to_numeric(out["Home_xG"], errors="coerce")
+    if "Home_xGA" not in out.columns and "AwayxG" in out.columns:
+        out["Home_xGA"] = pd.to_numeric(out["AwayxG"], errors="coerce")
+    if "Away_xGA" not in out.columns and "HomexG" in out.columns:
+        out["Away_xGA"] = pd.to_numeric(out["HomexG"], errors="coerce")
 
     if "Home_GA" not in out.columns and "AwayGoals" in out.columns:
         out["Home_GA"] = pd.to_numeric(out["AwayGoals"], errors="coerce")
@@ -252,43 +261,43 @@ def add_overall_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
     home_part = pd.DataFrame({
         "team": out["Home"].astype(str),
         "Date": out["Date"],
-        "xG": pd.to_numeric(out.get("Home_xG"), errors="coerce"),
+        "xG": pd.to_numeric(out.get("HomexG"), errors="coerce"),
         "G": pd.to_numeric(out.get("HomeGoals"), errors="coerce"),
-        "ShotsOnTarget": pd.to_numeric(out.get("Home_ShotsOnTarget_Made"), errors="coerce"),
-        "Saves": pd.to_numeric(out.get("Home_Saves_Made"), errors="coerce"),
-        "Tackles": pd.to_numeric(out.get("Home_Tackles_Made"), errors="coerce"),
-        "Crosses": pd.to_numeric(out.get("Home_Crosses_Made"), errors="coerce"),
-        "Touches": pd.to_numeric(out.get("Home_Touches_Made"), errors="coerce"),
-        "LongBalls": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
+        "ShotsOnTarget": pd.to_numeric(out.get("HomeShotsOnTargetMade"), errors="coerce"),
+        "Saves": pd.to_numeric(out.get("HomeSavesMade"), errors="coerce"),
+        "Tackles": pd.to_numeric(out.get("HomeTacklesMade"), errors="coerce"),
+        "Crosses": pd.to_numeric(out.get("HomeCrossesMade"), errors="coerce"),
+        "Touches": pd.to_numeric(out.get("HomeTouchesMade"), errors="coerce"),
+        "LongBalls": pd.to_numeric(out.get("HomeLongBallsMade"), errors="coerce"),
 
         "xGA": pd.to_numeric(out.get("Home_xGA"), errors="coerce"),
         "GA": pd.to_numeric(out.get("Home_GA"), errors="coerce"),
-        "ShotsOnTargetA": pd.to_numeric(out.get("Away_ShotsOnTarget_Made"), errors="coerce"),
-        "TacklesA": pd.to_numeric(out.get("Away_Tackles_Made"), errors="coerce"),
-        "CrossesA": pd.to_numeric(out.get("Away_Crosses_Made"), errors="coerce"),
-        "TouchesA": pd.to_numeric(out.get("Away_Touches_Made"), errors="coerce"),
-        "LongBallsA": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
+        "ShotsOnTargetA": pd.to_numeric(out.get("AwayShotsOnTargetMade"), errors="coerce"),
+        "TacklesA": pd.to_numeric(out.get("AwayTacklesMade"), errors="coerce"),
+        "CrossesA": pd.to_numeric(out.get("AwayCrossesMade"), errors="coerce"),
+        "TouchesA": pd.to_numeric(out.get("AwayTouchesMade"), errors="coerce"),
+        "LongBallsA": pd.to_numeric(out.get("AwayLongBallsMade"), errors="coerce"),
     })
 
     away_part = pd.DataFrame({
         "team": out["Away"].astype(str),
         "Date": out["Date"],
-        "xG": pd.to_numeric(out.get("Away_xG"), errors="coerce"),
+        "xG": pd.to_numeric(out.get("AwayxG"), errors="coerce"),
         "G": pd.to_numeric(out.get("AwayGoals"), errors="coerce"),
-        "ShotsOnTarget": pd.to_numeric(out.get("Away_ShotsOnTarget_Made"), errors="coerce"),
-        "Saves": pd.to_numeric(out.get("Away_Saves_Made"), errors="coerce"),
-        "Tackles": pd.to_numeric(out.get("Away_Tackles_Made"), errors="coerce"),
-        "Crosses": pd.to_numeric(out.get("Away_Crosses_Made"), errors="coerce"),
-        "Touches": pd.to_numeric(out.get("Away_Touches_Made"), errors="coerce"),
-        "LongBalls": pd.to_numeric(out.get("Away_LongBalls_Made"), errors="coerce"),
+        "ShotsOnTarget": pd.to_numeric(out.get("AwayShotsOnTargetMade"), errors="coerce"),
+        "Saves": pd.to_numeric(out.get("AwaySavesMade"), errors="coerce"),
+        "Tackles": pd.to_numeric(out.get("AwayTacklesMade"), errors="coerce"),
+        "Crosses": pd.to_numeric(out.get("AwayCrossesMade"), errors="coerce"),
+        "Touches": pd.to_numeric(out.get("AwayTouchesMade"), errors="coerce"),
+        "LongBalls": pd.to_numeric(out.get("AwayLongBallsMade"), errors="coerce"),
 
         "xGA": pd.to_numeric(out.get("Away_xGA"), errors="coerce"),
         "GA": pd.to_numeric(out.get("Away_GA"), errors="coerce"),
-        "ShotsOnTargetA": pd.to_numeric(out.get("Home_ShotsOnTarget_Made"), errors="coerce"),
-        "TacklesA": pd.to_numeric(out.get("Home_Tackles_Made"), errors="coerce"),
-        "CrossesA": pd.to_numeric(out.get("Home_Crosses_Made"), errors="coerce"),
-        "TouchesA": pd.to_numeric(out.get("Home_Touches_Made"), errors="coerce"),
-        "LongBallsA": pd.to_numeric(out.get("Home_LongBalls_Made"), errors="coerce"),
+        "ShotsOnTargetA": pd.to_numeric(out.get("HomeShotsOnTargetMade"), errors="coerce"),
+        "TacklesA": pd.to_numeric(out.get("HomeTacklesMade"), errors="coerce"),
+        "CrossesA": pd.to_numeric(out.get("HomeCrossesMade"), errors="coerce"),
+        "TouchesA": pd.to_numeric(out.get("HomeTouchesMade"), errors="coerce"),
+        "LongBallsA": pd.to_numeric(out.get("HomeLongBallsMade"), errors="coerce"),
     })
 
     long_df = pd.concat([home_part, away_part], ignore_index=True)
@@ -661,6 +670,12 @@ def predict_upcoming_with_features(
     # >>> NEW: compute true kickoff in UTC from Date+Time (UK)
     upcoming_feat["Kickoff_UTC"] = combine_date_time_to_utc(upcoming_feat)
 
+    # >>> LIMIT TO NEXT 10 GAMES: Sort by kickoff time and take first 10
+    upcoming_feat = upcoming_feat.sort_values("Kickoff_UTC").head(10)
+    if upcoming_feat.empty:
+        logging.info("No upcoming fixtures after filtering to next 10.")
+        return pd.DataFrame(), pd.DataFrame()
+
     # Features used for prediction
     Xu = upcoming_feat[PREDICTORS]
 
@@ -732,6 +747,12 @@ def predict_upcoming_in_test_season(
     # >>> NEW: compute true kickoff in UTC from Date+Time (UK)
     upcoming_feat["Kickoff_UTC"] = combine_date_time_to_utc(upcoming_feat)
 
+    # >>> LIMIT TO NEXT 10 GAMES: Sort by kickoff time and take first 10
+    upcoming_feat = upcoming_feat.sort_values("Kickoff_UTC").head(10)
+    if upcoming_feat.empty:
+        logging.info("No upcoming fixtures after filtering to next 10.")
+        return pd.DataFrame()
+
     # The features used for prediction
     Xu = upcoming_feat[PREDICTORS]
 
@@ -767,17 +788,106 @@ def predict_upcoming_in_test_season(
 
 
 # =========================
+# Config file support
+# =========================
+def load_config(config_path: str) -> Dict[str, Any]:
+    """Load configuration from YAML file."""
+    if not HAS_YAML:
+        raise ImportError("pyyaml not installed. Install with: pip install pyyaml")
+    
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    
+    logging.info(f"Loaded configuration from {config_path}")
+    return config
+
+
+def merge_config_with_args(config: Optional[Dict[str, Any]], args: argparse.Namespace) -> argparse.Namespace:
+    """
+    Merge config file with CLI arguments. CLI arguments take precedence.
+    If an argument is None (not provided via CLI), use config value.
+    """
+    if config is None:
+        return args
+    
+    # Data sources
+    if args.glob is None and 'data' in config and 'glob' in config['data']:
+        args.glob = config['data']['glob']
+    if args.files is None and 'data' in config and 'files' in config['data']:
+        args.files = config['data']['files']
+    
+    # Seasons
+    if 'seasons' in config:
+        if args.train_seasons is None and 'train' in config['seasons']:
+            args.train_seasons = config['seasons']['train']
+        if args.val_season is None and 'val' in config['seasons']:
+            args.val_season = config['seasons']['val']
+        if args.test_season is None and 'test' in config['seasons']:
+            args.test_season = config['seasons']['test']
+    
+    # Model hyperparameters (only if not explicitly set via CLI)
+    if 'model' in config:
+        if args.n_estimators == 600 and 'n_estimators' in config['model']:  # default value
+            args.n_estimators = config['model']['n_estimators']
+        if args.min_samples_split == 14 and 'min_samples_split' in config['model']:
+            args.min_samples_split = config['model']['min_samples_split']
+        if args.min_samples_leaf == 3 and 'min_samples_leaf' in config['model']:
+            args.min_samples_leaf = config['model']['min_samples_leaf']
+    
+    # Tuning
+    if 'tuning' in config:
+        # Check for explicit no_thresholds setting first
+        if not args.no_thresholds and 'no_thresholds' in config['tuning']:
+            args.no_thresholds = config['tuning']['no_thresholds']
+        # Otherwise, fall back to use_thresholds (inverse logic)
+        elif not args.no_thresholds and 'use_thresholds' in config['tuning']:
+            args.no_thresholds = not config['tuning']['use_thresholds']
+        if args.fallback_class is None and 'fallback_class' in config['tuning']:
+            args.fallback_class = config['tuning']['fallback_class']
+    
+    # Output
+    if 'output' in config:
+        if args.save_upcoming is None and 'predictions' in config['output']:
+            args.save_upcoming = config['output']['predictions']
+        if args.dump_upcoming_features is None and 'features' in config['output']:
+            args.dump_upcoming_features = config['output']['features']
+        if not args.no_plot and 'feature_importance_plot' in config['output']:
+            args.no_plot = not config['output']['feature_importance_plot']
+    
+    return args
+
+
+# =========================
 # CLI
 # =========================
 def main():
-    parser = argparse.ArgumentParser(description="Train/Validate/Test Random Forest with season-based splits.")
+    parser = argparse.ArgumentParser(
+        description="Train/Validate/Test Random Forest with season-based splits.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+        Examples:
+        # Using config file:
+        python src/models/match_predictor.py --config configs/train_config.yaml
+  
+        # Using config with CLI overrides:
+        python src/models/match_predictor.py --config configs/train_config.yaml --test-season 2026-2027
+  
+        # Using CLI only:
+        python src/models/match_predictor.py --glob "data/processed/*.csv" --train-seasons 2021-2022 2022-2023 --val-season 2024-2025 --test-season 2025-2026
+                """
+    )
+    
+    # Config file option
+    parser.add_argument("--config", type=str, help="Path to YAML config file. CLI args override config values.")
+    
+    # Data sources
     parser.add_argument("--glob", type=str, help="Glob for CSVs, e.g. 'data/processed/matches_*.csv'")
     parser.add_argument("--files", nargs="*", help="Explicit CSV paths")
 
-    parser.add_argument("--train-seasons", nargs="+", required=True,
+    parser.add_argument("--train-seasons", nargs="+", default=None,
                         help="Seasons to TRAIN on, e.g. 2021-2022 2022-2023 2023-2024")
-    parser.add_argument("--val-season", required=True, help="Season to VALIDATE on, e.g. 2024-2025")
-    parser.add_argument("--test-season", required=True, help="Season to TEST on, e.g. 2025-2026")
+    parser.add_argument("--val-season", default=None, help="Season to VALIDATE on, e.g. 2024-2025")
+    parser.add_argument("--test-season", default=None, help="Season to TEST on, e.g. 2025-2026")
 
     parser.add_argument("--n-estimators", type=int, default=600)
     parser.add_argument("--min-samples-split", type=int, default=14)
@@ -793,6 +903,23 @@ def main():
                         help="Disable learned thresholds and use plain argmax (fallback ignored).")
 
     args = parser.parse_args()
+    
+    # Load config and merge with CLI args
+    config = None
+    if args.config:
+        if not HAS_YAML:
+            logging.error("Config file specified but pyyaml not installed. Install with: pip install pyyaml")
+            return
+        config = load_config(args.config)
+        args = merge_config_with_args(config, args)
+    
+    # Validate required arguments
+    if args.train_seasons is None:
+        parser.error("--train-seasons is required (or provide via config file)")
+    if args.val_season is None:
+        parser.error("--val-season is required (or provide via config file)")
+    if args.test_season is None:
+        parser.error("--test-season is required (or provide via config file)")
 
     df_all = load_multiple_csvs(files=args.files, glob_pattern=args.glob)
 
@@ -856,11 +983,12 @@ def main():
         print("\nUpcoming prediction counts:")
         print(preds["pred_label"].value_counts())
 
-        print("\nSample of upcoming feature rows (first 10):")
-        try:
-            print(up_feat.head(10).to_string(index=False))
-        except Exception:
-            print(up_feat.head(10))
+        # Commented out to reduce output verbosity - uncomment to see feature details
+        # print("\nSample of upcoming feature rows (first 10):")
+        # try:
+        #     print(up_feat.head(10).to_string(index=False))
+        # except Exception:
+        #     print(up_feat.head(10))
 
         if args.save_upcoming is not None:
             preds.to_csv(args.save_upcoming, index=False)
