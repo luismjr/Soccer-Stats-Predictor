@@ -354,7 +354,7 @@ This project is for educational and portfolio purposes.
 
 ## 👨‍💻 Author
 
-**Luis Martinez Jr.**
+**Luis Martinez**
 
 *Demonstrating proficiency in data science, machine learning engineering, and full-stack development.*
 
