@@ -197,6 +197,14 @@ Opens interactive web interface at `http://localhost:5000`
 
 ---
 
+## 📊 Interactive Visualizations
+
+**Tableau Dashboards:** Explore live interactive dashboards at [My Tableau Profile](https://public.tableau.com/app/profile/luis.martinez5851/vizzes)
+
+![Tableau Dashboard Screenshot](docs/general/tableau_ss.png)
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -244,12 +252,8 @@ Soccer-Stats-Predictor/
 │   ├── general/                 # General documentation assets
 │   │   ├── preview.png         # Web application screenshot
 │   │   ├── feature_importances.png # Top 5 model features
+│   │   ├── tableau_ss.png      # Tableau dashboard screenshot
 │   │   └── README.md           # Visual assets documentation
-│   ├── tableau dashboards/      # Interactive Tableau workbooks
-│   │   ├── AttVsConfidence.twb # Attack vs confidence analysis
-│   │   ├── DefAttConfidence.twb # Defense & attack confidence
-│   │   ├── DefVsConfidence.twb # Defense vs confidence analysis
-│   │   └── Soccer Predictor (Attack).twb # Comprehensive attack analysis
 │   └── README.md               # Documentation overview
 ├── templates/                   # Web application templates
 │   └── index.html              # Main web app frontend
