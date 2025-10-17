@@ -19,7 +19,7 @@
     <WindowsPersistSimpleIdentifiers />
     <WorksheetBackgroundTransparency />
   </document-format-change-manifest>
-  <repository-location id='SoccerPredictorAttack' path='/workbooks' revision='1.0' />
+  <repository-location id='SoccerPredictorOverview' path='/workbooks' revision='1.1' />
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
@@ -488,7 +488,7 @@
       <column-instance column='[PredLabel]' derivation='None' name='[none:PredLabel:nk]' pivot='key' type='nominal' />
       <column-instance column='[RiskLevel]' derivation='None' name='[none:RiskLevel:nk]' pivot='key' type='nominal' />
       <extract _.fcp.VConnDownstreamExtractsWithWarnings.true...user-specific='false' count='-1' enabled='true' object-id='' units='records'>
-        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='/var/folders/jh/5_0p7b257d17p8lyj2gxc07w0000gn/T/tableau-temp/#TableauTemp_13k0fkh12n7n9016quxg80afsyr6.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='10/17/2025 05:12:12 AM' username='tableau_internal_user'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='/var/folders/jh/5_0p7b257d17p8lyj2gxc07w0000gn/T/tableau-temp/#TableauTemp_13k0fkh12n7n9016quxg80afsyr6.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='' username='tableau_internal_user'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
           <metadata-records>
             <metadata-record class='column'>
@@ -504,7 +504,6 @@
               <approx-count>1</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>Date</remote-name>
@@ -518,7 +517,6 @@
               <aggregation>Year</aggregation>
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>DayOfWeek</remote-name>
@@ -533,7 +531,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>WeekendMatch</remote-name>
@@ -547,7 +544,6 @@
               <aggregation>Count</aggregation>
               <approx-count>2</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>TimeCategory</remote-name>
@@ -562,7 +558,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>Home</remote-name>
@@ -577,7 +572,6 @@
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>Away</remote-name>
@@ -592,7 +586,6 @@
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>Match</remote-name>
@@ -607,7 +600,6 @@
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PredClass</remote-name>
@@ -621,7 +613,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PredLabel</remote-name>
@@ -636,7 +627,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>ModelExpectation</remote-name>
@@ -651,7 +641,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PHomeWin</remote-name>
@@ -665,7 +654,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PDraw</remote-name>
@@ -679,7 +667,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PHomeLoss</remote-name>
@@ -693,7 +680,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>Confidence</remote-name>
@@ -707,7 +693,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>ConfidencePct</remote-name>
@@ -721,7 +706,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>ConfidenceCategory</remote-name>
@@ -736,7 +720,6 @@
               <approx-count>4</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>RiskLevel</remote-name>
@@ -751,7 +734,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PredictionCertainty</remote-name>
@@ -765,7 +747,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>MatchImportance</remote-name>
@@ -780,7 +761,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>PredictionDifficulty</remote-name>
@@ -795,7 +775,6 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RGB' />
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>HomeAttackStrength</remote-name>
@@ -809,7 +788,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>HomeDefenseStrength</remote-name>
@@ -823,7 +801,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>8</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>AwayAttackStrength</remote-name>
@@ -837,7 +814,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>9</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>AwayDefenseStrength</remote-name>
@@ -851,7 +827,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>9</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>HomeAdvantage</remote-name>
@@ -865,7 +840,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>AwayAdvantage</remote-name>
@@ -879,7 +853,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>NetAdvantage</remote-name>
@@ -893,7 +866,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>10</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[main_predictions.csv_CEFC93E7CFC54D7693BCB9F60B364E54]</object-id>
             </metadata-record>
           </metadata-records>
         </connection>
@@ -2240,7 +2212,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run bold='true' fontname='Palatino' fontsize='18'>Predicted Outcomes</run>
+            <run bold='true' fontname='Palatino' fontsize='18'>Predictions</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -2310,60 +2282,22 @@
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
           <zone h='98000' id='50' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='31' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-              <zone h='98000' id='24' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
-                <zone fixed-size='67' h='9375' id='25' is-fixed='true' type-v2='title' w='98400' x='800' y='1000'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                  </zone-style>
-                </zone>
-                <zone h='88625' id='20' param='horz' type-v2='layout-flow' w='98400' x='800' y='10375'>
-                  <zone h='88625' id='18' type-v2='layout-basic' w='98400' x='800' y='10375'>
-                    <zone h='13625' id='11' param='vert' type-v2='layout-flow' w='98400' x='800' y='85375'>
-                      <zone h='13625' id='13' param='horz' type-v2='layout-flow' w='98400' x='800' y='85375'>
-                        <zone fixed-size='162' h='13625' id='45' is-fixed='true' param='vert' type-v2='layout-flow' w='16200' x='800' y='85375'>
-                          <zone fixed-size='197' h='13625' id='5' is-fixed='true' name='N Total' w='16200' x='800' y='85375'>
-                            <layout-cache cell-count-w='1' type-h='fixed' type-w='cell' />
-                            <zone-style>
-                              <format attr='border-color' value='#000000' />
-                              <format attr='border-style' value='none' />
-                              <format attr='border-width' value='0' />
-                              <format attr='margin' value='4' />
-                            </zone-style>
-                          </zone>
-                        </zone>
-                        <zone fixed-size='230' h='13625' id='6' is-fixed='true' name='Av Conf' w='23800' x='17000' y='85375'>
-                          <layout-cache type-h='cell' type-w='cell' />
-                          <zone-style>
-                            <format attr='border-color' value='#000000' />
-                            <format attr='border-style' value='none' />
-                            <format attr='border-width' value='0' />
-                            <format attr='margin' value='4' />
-                          </zone-style>
-                        </zone>
-                        <zone fixed-size='186' h='13625' id='14' is-fixed='true' name='N Home' w='19400' x='40800' y='85375'>
-                          <layout-cache type-h='cell' type-w='cell' />
-                          <zone-style>
-                            <format attr='border-color' value='#000000' />
-                            <format attr='border-style' value='none' />
-                            <format attr='border-width' value='0' />
-                            <format attr='margin' value='4' />
-                          </zone-style>
-                        </zone>
-                        <zone h='13625' id='15' name='N Draws' w='19500' x='60200' y='85375'>
-                          <layout-cache cell-count-w='1' type-h='cell' type-w='cell' />
-                          <zone-style>
-                            <format attr='border-color' value='#000000' />
-                            <format attr='border-style' value='none' />
-                            <format attr='border-width' value='0' />
-                            <format attr='margin' value='4' />
-                          </zone-style>
-                        </zone>
-                        <zone h='13625' id='16' name='N Away' w='19500' x='79700' y='85375'>
-                          <layout-cache cell-count-w='1' type-h='cell' type-w='cell' />
+            <zone h='98000' id='24' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+              <zone fixed-size='67' h='9375' id='25' is-fixed='true' type-v2='title' w='98400' x='800' y='1000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='88625' id='20' param='horz' type-v2='layout-flow' w='98400' x='800' y='10375'>
+                <zone h='88625' id='18' type-v2='layout-basic' w='98400' x='800' y='10375'>
+                  <zone h='13625' id='11' param='vert' type-v2='layout-flow' w='98400' x='800' y='85375'>
+                    <zone h='13625' id='13' param='horz' type-v2='layout-flow' w='98400' x='800' y='85375'>
+                      <zone fixed-size='162' h='13625' id='45' is-fixed='true' param='vert' type-v2='layout-flow' w='16200' x='800' y='85375'>
+                        <zone fixed-size='197' h='13625' id='5' is-fixed='true' name='N Total' w='16200' x='800' y='85375'>
+                          <layout-cache cell-count-w='1' type-h='fixed' type-w='cell' />
                           <zone-style>
                             <format attr='border-color' value='#000000' />
                             <format attr='border-style' value='none' />
@@ -2372,15 +2306,51 @@
                           </zone-style>
                         </zone>
                       </zone>
+                      <zone fixed-size='230' h='13625' id='6' is-fixed='true' name='Av Conf' w='23800' x='17000' y='85375'>
+                        <layout-cache type-h='cell' type-w='cell' />
+                        <zone-style>
+                          <format attr='border-color' value='#000000' />
+                          <format attr='border-style' value='none' />
+                          <format attr='border-width' value='0' />
+                          <format attr='margin' value='4' />
+                        </zone-style>
+                      </zone>
+                      <zone fixed-size='186' h='13625' id='14' is-fixed='true' name='N Home' w='19400' x='40800' y='85375'>
+                        <layout-cache type-h='cell' type-w='cell' />
+                        <zone-style>
+                          <format attr='border-color' value='#000000' />
+                          <format attr='border-style' value='none' />
+                          <format attr='border-width' value='0' />
+                          <format attr='margin' value='4' />
+                        </zone-style>
+                      </zone>
+                      <zone h='13625' id='15' name='N Draws' w='19500' x='60200' y='85375'>
+                        <layout-cache cell-count-w='1' type-h='cell' type-w='cell' />
+                        <zone-style>
+                          <format attr='border-color' value='#000000' />
+                          <format attr='border-style' value='none' />
+                          <format attr='border-width' value='0' />
+                          <format attr='margin' value='4' />
+                        </zone-style>
+                      </zone>
+                      <zone h='13625' id='16' name='N Away' w='19500' x='79700' y='85375'>
+                        <layout-cache cell-count-w='1' type-h='cell' type-w='cell' />
+                        <zone-style>
+                          <format attr='border-color' value='#000000' />
+                          <format attr='border-style' value='none' />
+                          <format attr='border-width' value='0' />
+                          <format attr='margin' value='4' />
+                        </zone-style>
+                      </zone>
                     </zone>
-                    <zone h='75000' id='48' name='A vs Conf' w='98400' x='800' y='10375'>
-                      <zone-style>
-                        <format attr='border-color' value='#000000' />
-                        <format attr='border-style' value='none' />
-                        <format attr='border-width' value='0' />
-                        <format attr='margin' value='4' />
-                      </zone-style>
-                    </zone>
+                  </zone>
+                  <zone h='75000' id='48' name='A vs Conf' w='98400' x='800' y='10375'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
                   </zone>
                 </zone>
               </zone>
@@ -2406,8 +2376,8 @@
           </layout-options>
           <size maxheight='1000' minheight='1000' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='67' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='66' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='71' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='70' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='67' h='9375' id='25' type-v2='title' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2511,35 +2481,31 @@
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
           <zone h='98000' id='30' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='23' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-              <zone h='98000' id='19' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-                <zone h='98000' id='17' type-v2='layout-basic' w='98400' x='800' y='1000'>
-                  <zone h='4621' id='12' type-v2='title' w='98400' x='800' y='1000'>
-                    <zone-style>
-                      <format attr='border-color' value='#000000' />
-                      <format attr='border-style' value='none' />
-                      <format attr='border-width' value='0' />
-                      <format attr='margin' value='4' />
-                    </zone-style>
-                  </zone>
-                  <zone h='44379' id='21' name='D vs Conf' w='98400' x='800' y='5621'>
-                    <layout-cache has-max-size-h='true' has-max-size-w='true' maxheight='583' maxwidth='854' minheight='583' minwidth='854' type-h='scalable' type-w='scalable' />
-                    <zone-style>
-                      <format attr='border-color' value='#000000' />
-                      <format attr='border-style' value='none' />
-                      <format attr='border-width' value='0' />
-                      <format attr='margin' value='4' />
-                    </zone-style>
-                  </zone>
-                  <zone h='49000' id='28' name='A vs Conf' w='98400' x='800' y='50000'>
-                    <zone-style>
-                      <format attr='border-color' value='#000000' />
-                      <format attr='border-style' value='none' />
-                      <format attr='border-width' value='0' />
-                      <format attr='margin' value='4' />
-                    </zone-style>
-                  </zone>
-                </zone>
+            <zone h='98000' id='17' type-v2='layout-basic' w='98400' x='800' y='1000'>
+              <zone h='4621' id='12' type-v2='title' w='98400' x='800' y='1000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='44379' id='21' name='D vs Conf' w='98400' x='800' y='5621'>
+                <layout-cache has-max-size-h='true' has-max-size-w='true' maxheight='583' maxwidth='854' minheight='583' minwidth='854' type-h='scalable' type-w='scalable' />
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='49000' id='28' name='A vs Conf' w='98400' x='800' y='50000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
               </zone>
             </zone>
           </zone>
@@ -2562,8 +2528,8 @@
           </layout-options>
           <size maxheight='700' minheight='700' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='54' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='53' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='58' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='57' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone h='4621' id='12' type-v2='title' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2618,41 +2584,30 @@
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
           <zone h='98000' id='50' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='31' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-              <zone h='98000' id='24' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
-                <zone fixed-size='67' h='9375' id='25' is-fixed='true' type-v2='title' w='98400' x='800' y='1000'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                  </zone-style>
-                </zone>
-                <zone fixed-size='582' h='73750' id='48' is-fixed='true' name='D vs Conf' w='98400' x='800' y='10375'>
-                  <layout-cache has-max-size-h='true' has-max-size-w='true' maxheight='583' maxwidth='854' minheight='583' minwidth='854' type-h='scalable' type-w='scalable' />
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                  </zone-style>
-                </zone>
-                <zone h='14875' id='20' param='horz' type-v2='layout-flow' w='98400' x='800' y='84125'>
-                  <zone h='14875' id='18' type-v2='layout-basic' w='98400' x='800' y='84125'>
-                    <zone h='14875' id='13' param='horz' type-v2='layout-flow' w='98400' x='800' y='84125'>
-                      <zone fixed-size='162' h='14875' id='45' is-fixed='true' param='vert' type-v2='layout-flow' w='16200' x='800' y='84125'>
-                        <zone fixed-size='197' h='14875' id='5' is-fixed='true' name='N Total' w='16200' x='800' y='84125'>
-                          <layout-cache cell-count-w='1' type-h='fixed' type-w='cell' />
-                          <zone-style>
-                            <format attr='border-color' value='#000000' />
-                            <format attr='border-style' value='none' />
-                            <format attr='border-width' value='0' />
-                            <format attr='margin' value='4' />
-                          </zone-style>
-                        </zone>
-                      </zone>
-                      <zone fixed-size='230' h='14875' id='6' is-fixed='true' name='Av Conf' w='23800' x='17000' y='84125'>
-                        <layout-cache fixed-size-h='72' type-h='fixed' type-w='cell' />
+            <zone h='98000' id='24' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+              <zone fixed-size='67' h='9375' id='25' is-fixed='true' type-v2='title' w='98400' x='800' y='1000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone fixed-size='582' h='73750' id='48' is-fixed='true' name='D vs Conf' w='98400' x='800' y='10375'>
+                <layout-cache has-max-size-h='true' has-max-size-w='true' maxheight='583' maxwidth='854' minheight='583' minwidth='854' type-h='scalable' type-w='scalable' />
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='14875' id='20' param='horz' type-v2='layout-flow' w='98400' x='800' y='84125'>
+                <zone h='14875' id='18' type-v2='layout-basic' w='98400' x='800' y='84125'>
+                  <zone h='14875' id='13' param='horz' type-v2='layout-flow' w='98400' x='800' y='84125'>
+                    <zone fixed-size='162' h='14875' id='45' is-fixed='true' param='vert' type-v2='layout-flow' w='16200' x='800' y='84125'>
+                      <zone fixed-size='197' h='14875' id='5' is-fixed='true' name='N Total' w='16200' x='800' y='84125'>
+                        <layout-cache cell-count-w='1' type-h='fixed' type-w='cell' />
                         <zone-style>
                           <format attr='border-color' value='#000000' />
                           <format attr='border-style' value='none' />
@@ -2660,33 +2615,42 @@
                           <format attr='margin' value='4' />
                         </zone-style>
                       </zone>
-                      <zone fixed-size='186' h='14875' id='14' is-fixed='true' name='N Home' w='19400' x='40800' y='84125'>
-                        <layout-cache fixed-size-h='72' type-h='fixed' type-w='cell' />
-                        <zone-style>
-                          <format attr='border-color' value='#000000' />
-                          <format attr='border-style' value='none' />
-                          <format attr='border-width' value='0' />
-                          <format attr='margin' value='4' />
-                        </zone-style>
-                      </zone>
-                      <zone h='14875' id='15' name='N Draws' w='19500' x='60200' y='84125'>
-                        <layout-cache cell-count-w='1' fixed-size-h='72' type-h='fixed' type-w='cell' />
-                        <zone-style>
-                          <format attr='border-color' value='#000000' />
-                          <format attr='border-style' value='none' />
-                          <format attr='border-width' value='0' />
-                          <format attr='margin' value='4' />
-                        </zone-style>
-                      </zone>
-                      <zone h='14875' id='16' name='N Away' w='19500' x='79700' y='84125'>
-                        <layout-cache cell-count-w='1' fixed-size-h='99' type-h='fixed' type-w='cell' />
-                        <zone-style>
-                          <format attr='border-color' value='#000000' />
-                          <format attr='border-style' value='none' />
-                          <format attr='border-width' value='0' />
-                          <format attr='margin' value='4' />
-                        </zone-style>
-                      </zone>
+                    </zone>
+                    <zone fixed-size='230' h='14875' id='6' is-fixed='true' name='Av Conf' w='23800' x='17000' y='84125'>
+                      <layout-cache fixed-size-h='72' type-h='fixed' type-w='cell' />
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone fixed-size='186' h='14875' id='14' is-fixed='true' name='N Home' w='19400' x='40800' y='84125'>
+                      <layout-cache fixed-size-h='72' type-h='fixed' type-w='cell' />
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone h='14875' id='15' name='N Draws' w='19500' x='60200' y='84125'>
+                      <layout-cache cell-count-w='1' fixed-size-h='72' type-h='fixed' type-w='cell' />
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone h='14875' id='16' name='N Away' w='19500' x='79700' y='84125'>
+                      <layout-cache cell-count-w='1' fixed-size-h='99' type-h='fixed' type-w='cell' />
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
                     </zone>
                   </zone>
                 </zone>
@@ -2720,8 +2684,8 @@
           </layout-options>
           <size maxheight='1050' minheight='1050' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='67' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='66' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='71' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='70' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='67' h='9375' id='25' type-v2='title' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2822,13 +2786,13 @@
         </title>
       </layout-options>
       <style />
-      <size sizing-mode='automatic' />
+      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' preset-index='1' sizing-mode='fixed' />
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='98210' id='40' param='horz' type-v2='layout-flow' w='99048' x='476' y='895'>
-            <zone h='98210' id='32' type-v2='layout-basic' w='99048' x='476' y='895'>
-              <zone h='98210' id='12' param='vert' type-v2='layout-flow' w='99048' x='476' y='895'>
-                <zone fixed-size='104' h='12528' id='13' is-fixed='true' type-v2='title' w='99048' x='476' y='895'>
+          <zone h='98000' id='40' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='98000' id='32' type-v2='layout-basic' w='98400' x='800' y='1000'>
+              <zone h='98000' id='12' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+                <zone fixed-size='104' h='14000' id='13' is-fixed='true' type-v2='title' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -2836,19 +2800,10 @@
                     <format attr='margin' value='4' />
                   </zone-style>
                 </zone>
-                <zone h='85682' id='7' param='horz' type-v2='layout-flow' w='99048' x='476' y='13423'>
-                  <zone h='85682' id='5' type-v2='layout-basic' w='99048' x='476' y='13423'>
-                    <zone h='42847' id='9' param='horz' type-v2='layout-flow' w='99048' x='476' y='56258'>
-                      <zone h='42847' id='28' name='Label Dist' w='43172' x='476' y='56258'>
-                        <layout-cache cell-count-w='3' non-cell-size-w='85' type-h='fixed' type-w='cell' />
-                        <zone-style>
-                          <format attr='border-color' value='#000000' />
-                          <format attr='border-style' value='none' />
-                          <format attr='border-width' value='0' />
-                          <format attr='margin' value='4' />
-                        </zone-style>
-                      </zone>
-                      <zone h='42847' id='3' name='Conf Dist' w='55876' x='43648' y='56258'>
+                <zone h='84000' id='7' param='horz' type-v2='layout-flow' w='98400' x='800' y='15000'>
+                  <zone h='84000' id='5' type-v2='layout-basic' w='98400' x='800' y='15000'>
+                    <zone h='42007' id='9' param='horz' type-v2='layout-flow' w='72600' x='26600' y='56993'>
+                      <zone h='42007' id='3' name='Conf Dist' w='72600' x='26600' y='56993'>
                         <layout-cache cell-count-w='4' minheight='154' non-cell-size-w='85' type-h='scalable' type-w='cell' />
                         <zone-style>
                           <format attr='border-color' value='#000000' />
@@ -2858,7 +2813,7 @@
                         </zone-style>
                       </zone>
                     </zone>
-                    <zone h='42835' id='35' name='Label + Conf' w='82377' x='476' y='13423'>
+                    <zone h='41993' id='35' name='Label + Conf' w='98400' x='800' y='15000'>
                       <zone-style>
                         <format attr='border-color' value='#000000' />
                         <format attr='border-style' value='none' />
@@ -2866,8 +2821,8 @@
                         <format attr='margin' value='4' />
                       </zone-style>
                     </zone>
-                    <zone h='42835' id='42' param='vert' type-v2='layout-flow' w='16671' x='82853' y='13423'>
-                      <zone fixed-size='24' h='3580' id='43' is-fixed='true' type-v2='empty' w='16671' x='82853' y='13423'>
+                    <zone h='42007' id='76' param='vert' type-v2='layout-flow' w='25800' x='800' y='56993'>
+                      <zone fixed-size='83' h='11375' id='41' is-fixed='true' name='Pie Chart' pane-specification-id='0' param='[federated.1c23t7b0e7grfj12qv5jx0elrp32].[none:Pred Label (copy)_2047449045466656768:nk]' type-v2='color' w='25800' x='800' y='56993'>
                         <zone-style>
                           <format attr='border-color' value='#000000' />
                           <format attr='border-style' value='none' />
@@ -2875,15 +2830,7 @@
                           <format attr='margin' value='4' />
                         </zone-style>
                       </zone>
-                      <zone h='9620' id='41' name='Pie Chart' pane-specification-id='0' param='[federated.1c23t7b0e7grfj12qv5jx0elrp32].[none:Pred Label (copy)_2047449045466656768:nk]' type-v2='color' w='16671' x='82853' y='17003'>
-                        <zone-style>
-                          <format attr='border-color' value='#000000' />
-                          <format attr='border-style' value='none' />
-                          <format attr='border-width' value='0' />
-                          <format attr='margin' value='4' />
-                        </zone-style>
-                      </zone>
-                      <zone h='29635' id='38' name='Pie Chart' w='16671' x='82853' y='26623'>
+                      <zone h='30632' id='38' name='Pie Chart' w='25800' x='800' y='68368'>
                         <layout-cache cell-count-h='1' non-cell-size-h='42' type-h='cell' type-w='fixed' />
                         <zone-style>
                           <format attr='border-color' value='#000000' />
@@ -2915,11 +2862,11 @@
               </formatted-text>
             </title>
           </layout-options>
-          <size maxheight='1250' minheight='1250' sizing-mode='vscroll' />
+          <size maxheight='1000' minheight='1000' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='73' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98210' id='72' param='vert' type-v2='layout-flow' w='99048' x='476' y='895'>
-                <zone fixed-size='104' h='12528' id='13' type-v2='title' w='99048' x='476' y='895'>
+            <zone h='100000' id='78' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='77' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+                <zone fixed-size='104' h='14000' id='13' type-v2='title' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -2928,7 +2875,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='42835' id='35' is-fixed='true' name='Label + Conf' w='82377' x='476' y='13423'>
+                <zone fixed-size='280' h='41993' id='35' is-fixed='true' name='Label + Conf' w='98400' x='800' y='15000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -2937,7 +2884,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='229' h='29635' id='38' is-fixed='true' name='Pie Chart' w='16671' x='82853' y='26623'>
+                <zone fixed-size='280' h='42007' id='3' is-fixed='true' name='Conf Dist' w='72600' x='26600' y='56993'>
+                  <layout-cache cell-count-w='4' minheight='154' non-cell-size-w='85' type-h='scalable' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='237' h='30632' id='38' is-fixed='true' name='Pie Chart' w='25800' x='800' y='68368'>
                   <layout-cache cell-count-h='1' non-cell-size-h='42' type-h='cell' type-w='fixed' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2947,27 +2904,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='9620' id='41' name='Pie Chart' pane-specification-id='0' param='[federated.1c23t7b0e7grfj12qv5jx0elrp32].[none:Pred Label (copy)_2047449045466656768:nk]' type-v2='color' w='16671' x='82853' y='17003'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone fixed-size='280' h='42847' id='28' is-fixed='true' name='Label Dist' w='43172' x='476' y='56258'>
-                  <layout-cache cell-count-w='3' non-cell-size-w='85' type-h='fixed' type-w='cell' />
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone fixed-size='280' h='42847' id='3' is-fixed='true' name='Conf Dist' w='55876' x='43648' y='56258'>
-                  <layout-cache cell-count-w='4' minheight='154' non-cell-size-w='85' type-h='scalable' type-w='cell' />
+                <zone fixed-size='83' h='11375' id='41' name='Pie Chart' pane-specification-id='0' param='[federated.1c23t7b0e7grfj12qv5jx0elrp32].[none:Pred Label (copy)_2047449045466656768:nk]' type-v2='color' w='25800' x='800' y='56993'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -3030,9 +2967,6 @@
         <viewpoint name='Label + Conf'>
           <zoom type='entire-view' />
         </viewpoint>
-        <viewpoint name='Label Dist'>
-          <zoom type='entire-view' />
-        </viewpoint>
         <viewpoint name='Pie Chart'>
           <zoom type='entire-view' />
         </viewpoint>
@@ -3041,7 +2975,7 @@
       <device-preview visible='true' />
       <simple-id uuid='{305BBB68-C3E6-4D40-AD82-9140E2CFB9DA}' />
     </window>
-    <window class='dashboard' name='Att/Def Overview'>
+    <window class='dashboard' maximized='true' name='Att/Def Overview'>
       <viewpoints>
         <viewpoint name='A vs Conf'>
           <zoom type='entire-view' />
@@ -3381,7 +3315,7 @@
       <active id='-1' />
       <simple-id uuid='{24603CF5-BAA1-4153-84B0-1B1618922709}' />
     </window>
-    <window class='worksheet' maximized='true' name='Pie Chart'>
+    <window class='worksheet' name='Pie Chart'>
       <cards>
         <edge name='left'>
           <strip size='160'>

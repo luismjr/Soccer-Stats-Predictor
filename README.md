@@ -2,7 +2,7 @@
 
 A production-ready machine learning system that predicts Premier League match outcomes using comprehensive web-scraped statistics, advanced feature engineering, and ensemble learning techniques.
 
-![Premier League Match Predictor](docs/preview.png)
+![Premier League Match Predictor](docs/general/preview.png)
 
 ---
 
@@ -183,7 +183,13 @@ python src/models/match_predictor.py --config configs/predict_config.yaml
 ```
 Trains on historical data and outputs predictions for next 10 upcoming fixtures.
 
-**4. Launch Web App:**
+**4. Generate Tableau Exports (Optional):**
+```bash
+python src/tableau/export_tableau.py
+```
+Creates comprehensive CSV files for Tableau dashboards with advanced analytics.
+
+**5. Launch Web App:**
 ```bash
 python app.py
 ```
@@ -195,28 +201,62 @@ Opens interactive web interface at `http://localhost:5000`
 
 ```
 Soccer-Stats-Predictor/
-├── src/
-│   ├── scraping/
+├── src/                          # Source code modules
+│   ├── scraping/                 # Web scraping utilities
 │   │   ├── matches.py           # Basic match data scraper
 │   │   ├── matches_adv.py       # Advanced stats scraper (checkpointing)
 │   │   ├── get_season.py        # Season-level stats scraper
-│   │   └── clean_season.py      # Squad data processor
-│   └── models/
-│       └── match_predictor.py   # ML pipeline & feature engineering
-├── configs/
+│   │   ├── clean_season.py      # Squad data processor
+│   │   └── README.md            # Scraping module documentation
+│   ├── models/                   # Machine learning pipeline
+│   │   ├── match_predictor.py   # ML pipeline & feature engineering
+│   │   └── README.md            # Models module documentation
+│   ├── tableau/                  # Tableau export utilities
+│   │   ├── export_tableau.py    # Advanced Tableau data export
+│   │   └── README.md            # Tableau module documentation
+│   └── README.md                # Source code overview
+├── configs/                      # Configuration files
 │   ├── train_config.yaml        # Training/validation configuration
-│   └── predict_config.yaml      # Production prediction configuration
-├── data/
-│   ├── raw/                     # Scraped match schedules
-│   ├── processed/               # Merged data with advanced stats
-│   └── tmp/                     # Checkpoint files for resume
-├── templates/
-│   └── index.html               # Web app frontend
-├── docs/
-│   ├── preview.png              # App screenshot
-│   └── feature_importances.png  # Model insights
-├── app.py                       # Flask web application
-└── requirements.txt             # Python dependencies
+│   ├── predict_config.yaml      # Production prediction configuration
+│   └── README.md                # Configuration documentation
+├── data/                         # Data storage
+│   ├── raw/                     # Scraped raw data
+│   │   ├── match/              # Raw match data by season
+│   │   ├── season/             # Raw season statistics
+│   │   └── README.md           # Raw data documentation
+│   ├── processed/               # Cleaned and processed data
+│   │   ├── match/              # Processed match statistics
+│   │   ├── season/             # Processed season statistics
+│   │   └── README.md           # Processed data documentation
+│   ├── prediction/              # Model predictions and features
+│   │   ├── prediction_data.csv # Main prediction results
+│   │   ├── prediction_features.csv # Feature data for predictions
+│   │   └── README.md           # Prediction data documentation
+│   ├── tableau/                 # Tableau-ready exports
+│   │   ├── main_predictions.csv # Main dashboard dataset
+│   │   ├── team_analysis.csv    # Team-focused analysis
+│   │   ├── feature_analysis.csv # Feature importance analysis
+│   │   └── summary_stats.csv   # High-level statistics
+│   ├── tmp/                     # Temporary and checkpoint files
+│   │   └── README.md           # Temporary data documentation
+│   └── README.md               # Data overview documentation
+├── docs/                        # Documentation and visualizations
+│   ├── general/                 # General documentation assets
+│   │   ├── preview.png         # Web application screenshot
+│   │   ├── feature_importances.png # Top 5 model features
+│   │   └── README.md           # Visual assets documentation
+│   ├── tableau dashboards/      # Interactive Tableau workbooks
+│   │   ├── AttVsConfidence.twb # Attack vs confidence analysis
+│   │   ├── DefAttConfidence.twb # Defense & attack confidence
+│   │   ├── DefVsConfidence.twb # Defense vs confidence analysis
+│   │   └── Soccer Predictor (Attack).twb # Comprehensive attack analysis
+│   └── README.md               # Documentation overview
+├── templates/                   # Web application templates
+│   └── index.html              # Main web app frontend
+├── venv/                       # Python virtual environment
+├── app.py                      # Flask web application entry point
+├── requirements.txt            # Python dependencies
+└── README.md                   # This file - project overview
 ```
 
 ---
