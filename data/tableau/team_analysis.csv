@@ -1,0 +1,21 @@
+Match,Team,TeamLocation,Opponent,PredictedOutcome,WinProbability,ConfidencePct,AttackStrength,DefenseStrength,Advantage
+Nott'ham Forest vs Chelsea,Nott'ham Forest,Home,Chelsea,Away Win,0.2662297567294077,52.8,1.23,1.99,-0.33
+Nott'ham Forest vs Chelsea,Chelsea,Away,Nott'ham Forest,Away Win,0.5276128469456178,52.8,1.66,1.56,-0.33
+Sunderland vs Wolves,Sunderland,Home,Wolves,Draw,0.3239777273642136,39.9,1.02,1.12,-0.26
+Sunderland vs Wolves,Wolves,Away,Sunderland,Draw,0.3992652288461087,39.9,1.02,1.28,-0.1
+Burnley vs Leeds United,Burnley,Home,Leeds United,Draw,0.2956300159630087,37.2,1.52,2.24,-0.04
+Burnley vs Leeds United,Leeds United,Away,Burnley,Draw,0.3716427343610916,37.2,1.25,1.56,-0.99
+Crystal Palace vs Bournemouth,Crystal Palace,Home,Bournemouth,Draw,0.3773726499384163,43.3,1.45,1.02,0.22
+Crystal Palace vs Bournemouth,Bournemouth,Away,Crystal Palace,Draw,0.4327559119839167,43.3,1.32,1.23,0.3
+Brighton vs Newcastle Utd,Brighton,Home,Newcastle Utd,Draw,0.2790207405704946,53.4,1.5,1.38,1.09
+Brighton vs Newcastle Utd,Newcastle Utd,Away,Brighton,Draw,0.5342989143857783,53.4,0.54,0.41,-0.84
+Manchester City vs Everton,Manchester City,Home,Everton,Home Win,0.6656311341503709,66.6,1.43,0.94,0.13
+Manchester City vs Everton,Everton,Away,Manchester City,Home Win,0.6656311341503709,66.6,1.32,1.3,0.38
+Fulham vs Arsenal,Fulham,Home,Arsenal,Home Win,0.3801068141724943,38.0,1.28,1.48,0.62
+Fulham vs Arsenal,Arsenal,Away,Fulham,Home Win,0.3801068141724943,38.0,1.01,0.66,-0.47
+Tottenham vs Aston Villa,Tottenham,Home,Aston Villa,Away Win,0.3294985812205303,34.4,1.16,1.12,-0.01
+Tottenham vs Aston Villa,Aston Villa,Away,Tottenham,Away Win,0.3443271354918548,34.4,0.99,1.17,-0.13
+Liverpool vs Manchester Utd,Liverpool,Home,Manchester Utd,Home Win,0.6559610063379356,65.6,1.21,1.02,-0.69
+Liverpool vs Manchester Utd,Manchester Utd,Away,Liverpool,Home Win,0.6559610063379356,65.6,1.7,1.9,0.68
+West Ham vs Brentford,West Ham,Home,Brentford,Away Win,0.2545452537351598,45.2,1.29,1.56,-0.52
+West Ham vs Brentford,Brentford,Away,West Ham,Away Win,0.4516290325964088,45.2,1.48,1.81,-0.08

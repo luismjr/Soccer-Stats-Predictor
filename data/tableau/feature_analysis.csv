@@ -1,0 +1,241 @@
+Match,Feature,FeatureCategory,Team,Value,ConfidencePct,PredictedOutcome
+Nott'ham Forest vs Chelsea,xG_L5,Attack,Away,1.3666666666666665,52.8,Away Win
+Nott'ham Forest vs Chelsea,G_L5,Attack,Away,1.0,52.8,Away Win
+Nott'ham Forest vs Chelsea,ShotsOnTarget_L5,Other,Away,4.666666666666667,52.8,Away Win
+Nott'ham Forest vs Chelsea,xGA_L5,Attack,Away,1.8,52.8,Away Win
+Nott'ham Forest vs Chelsea,GA_L5,Attack,Away,1.6666666666666667,52.8,Away Win
+Nott'ham Forest vs Chelsea,ShotsOnTargetA_L5,Other,Away,33.0,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_xG_L5,Attack,Home,0.76,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_G_L5,Attack,Home,0.2,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_ShotsOnTarget_L5,Other,Home,25.8,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_xGA_L5,Attack,Home,1.98,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_GA_L5,Attack,Home,2.0,52.8,Away Win
+Nott'ham Forest vs Chelsea,HomeOverall_ShotsOnTargetA_L5,Other,Home,14.4,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_xG_L5,Attack,Away,1.3199999999999998,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_G_L5,Attack,Away,1.6,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_ShotsOnTarget_L5,Other,Away,21.4,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_xGA_L5,Attack,Away,1.66,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_GA_L5,Attack,Away,1.6,52.8,Away Win
+Nott'ham Forest vs Chelsea,AwayOverall_ShotsOnTargetA_L5,Other,Away,24.6,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_xG_L5,Attack,Away,1.4666666666666668,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_G_L5,Attack,Away,2.6666666666666665,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_ShotsOnTarget_L5,Other,Away,42.0,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_xGA_L5,Attack,Away,1.3,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_GA_L5,Attack,Away,1.6666666666666667,52.8,Away Win
+Nott'ham Forest vs Chelsea,Away_ShotsOnTargetA_L5,Other,Away,4.0,52.8,Away Win
+Sunderland vs Wolves,xG_L5,Attack,Away,1.0666666666666669,39.9,Draw
+Sunderland vs Wolves,G_L5,Attack,Away,2.0,39.9,Draw
+Sunderland vs Wolves,ShotsOnTarget_L5,Other,Away,3.6666666666666665,39.9,Draw
+Sunderland vs Wolves,xGA_L5,Attack,Away,0.8666666666666667,39.9,Draw
+Sunderland vs Wolves,GA_L5,Attack,Away,0.6666666666666666,39.9,Draw
+Sunderland vs Wolves,ShotsOnTargetA_L5,Other,Away,32.333333333333336,39.9,Draw
+Sunderland vs Wolves,HomeOverall_xG_L5,Attack,Home,1.04,39.9,Draw
+Sunderland vs Wolves,HomeOverall_G_L5,Attack,Home,0.8,39.9,Draw
+Sunderland vs Wolves,HomeOverall_ShotsOnTarget_L5,Other,Home,23.2,39.9,Draw
+Sunderland vs Wolves,HomeOverall_xGA_L5,Attack,Home,1.4400000000000002,39.9,Draw
+Sunderland vs Wolves,HomeOverall_GA_L5,Attack,Home,0.8,39.9,Draw
+Sunderland vs Wolves,HomeOverall_ShotsOnTargetA_L5,Other,Home,13.0,39.9,Draw
+Sunderland vs Wolves,AwayOverall_xG_L5,Attack,Away,1.02,39.9,Draw
+Sunderland vs Wolves,AwayOverall_G_L5,Attack,Away,1.0,39.9,Draw
+Sunderland vs Wolves,AwayOverall_ShotsOnTarget_L5,Other,Away,13.6,39.9,Draw
+Sunderland vs Wolves,AwayOverall_xGA_L5,Attack,Away,1.12,39.9,Draw
+Sunderland vs Wolves,AwayOverall_GA_L5,Attack,Away,1.8,39.9,Draw
+Sunderland vs Wolves,AwayOverall_ShotsOnTargetA_L5,Other,Away,25.6,39.9,Draw
+Sunderland vs Wolves,Away_xG_L5,Attack,Away,0.7000000000000001,39.9,Draw
+Sunderland vs Wolves,Away_G_L5,Attack,Away,0.3333333333333333,39.9,Draw
+Sunderland vs Wolves,Away_ShotsOnTarget_L5,Other,Away,28.0,39.9,Draw
+Sunderland vs Wolves,Away_xGA_L5,Attack,Away,1.2,39.9,Draw
+Sunderland vs Wolves,Away_GA_L5,Attack,Away,1.0,39.9,Draw
+Sunderland vs Wolves,Away_ShotsOnTargetA_L5,Other,Away,3.6666666666666665,39.9,Draw
+Burnley vs Leeds United,xG_L5,Attack,Away,0.6666666666666666,37.2,Draw
+Burnley vs Leeds United,G_L5,Attack,Away,1.0,37.2,Draw
+Burnley vs Leeds United,ShotsOnTarget_L5,Other,Away,2.3333333333333335,37.2,Draw
+Burnley vs Leeds United,xGA_L5,Attack,Away,1.5,37.2,Draw
+Burnley vs Leeds United,GA_L5,Attack,Away,0.6666666666666666,37.2,Draw
+Burnley vs Leeds United,ShotsOnTargetA_L5,Other,Away,23.666666666666668,37.2,Draw
+Burnley vs Leeds United,HomeOverall_xG_L5,Attack,Home,0.6,37.2,Draw
+Burnley vs Leeds United,HomeOverall_G_L5,Attack,Home,1.0,37.2,Draw
+Burnley vs Leeds United,HomeOverall_ShotsOnTarget_L5,Other,Home,22.0,37.2,Draw
+Burnley vs Leeds United,HomeOverall_xGA_L5,Attack,Home,2.08,37.2,Draw
+Burnley vs Leeds United,HomeOverall_GA_L5,Attack,Home,2.4,37.2,Draw
+Burnley vs Leeds United,HomeOverall_ShotsOnTargetA_L5,Other,Home,12.4,37.2,Draw
+Burnley vs Leeds United,AwayOverall_xG_L5,Attack,Away,1.1,37.2,Draw
+Burnley vs Leeds United,AwayOverall_G_L5,Attack,Away,1.2,37.2,Draw
+Burnley vs Leeds United,AwayOverall_ShotsOnTarget_L5,Other,Away,22.2,37.2,Draw
+Burnley vs Leeds United,AwayOverall_xGA_L5,Attack,Away,0.9,37.2,Draw
+Burnley vs Leeds United,AwayOverall_GA_L5,Attack,Away,1.2,37.2,Draw
+Burnley vs Leeds United,AwayOverall_ShotsOnTargetA_L5,Other,Away,17.2,37.2,Draw
+Burnley vs Leeds United,Away_xG_L5,Attack,Away,0.5,37.2,Draw
+Burnley vs Leeds United,Away_G_L5,Attack,Away,1.0,37.2,Draw
+Burnley vs Leeds United,Away_ShotsOnTarget_L5,Other,Away,40.666666666666664,37.2,Draw
+Burnley vs Leeds United,Away_xGA_L5,Attack,Away,1.8,37.2,Draw
+Burnley vs Leeds United,Away_GA_L5,Attack,Away,2.3333333333333335,37.2,Draw
+Burnley vs Leeds United,Away_ShotsOnTargetA_L5,Other,Away,4.333333333333333,37.2,Draw
+Crystal Palace vs Bournemouth,xG_L5,Attack,Away,1.9333333333333331,43.3,Draw
+Crystal Palace vs Bournemouth,G_L5,Attack,Away,1.0,43.3,Draw
+Crystal Palace vs Bournemouth,ShotsOnTarget_L5,Other,Away,5.666666666666667,43.3,Draw
+Crystal Palace vs Bournemouth,xGA_L5,Attack,Away,1.1333333333333335,43.3,Draw
+Crystal Palace vs Bournemouth,GA_L5,Attack,Away,0.6666666666666666,43.3,Draw
+Crystal Palace vs Bournemouth,ShotsOnTargetA_L5,Other,Away,45.666666666666664,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_xG_L5,Attack,Home,2.1799999999999997,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_G_L5,Attack,Home,1.6,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_ShotsOnTarget_L5,Other,Home,25.6,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_xGA_L5,Attack,Home,1.2399999999999998,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_GA_L5,Attack,Home,0.8,43.3,Draw
+Crystal Palace vs Bournemouth,HomeOverall_ShotsOnTargetA_L5,Other,Home,20.0,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_xG_L5,Attack,Away,1.06,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_G_L5,Attack,Away,1.6,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_ShotsOnTarget_L5,Other,Away,14.8,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_xGA_L5,Attack,Away,0.74,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_GA_L5,Attack,Away,0.8,43.3,Draw
+Crystal Palace vs Bournemouth,AwayOverall_ShotsOnTargetA_L5,Other,Away,23.0,43.3,Draw
+Crystal Palace vs Bournemouth,Away_xG_L5,Attack,Away,1.3,43.3,Draw
+Crystal Palace vs Bournemouth,Away_G_L5,Attack,Away,1.6666666666666667,43.3,Draw
+Crystal Palace vs Bournemouth,Away_ShotsOnTarget_L5,Other,Away,38.333333333333336,43.3,Draw
+Crystal Palace vs Bournemouth,Away_xGA_L5,Attack,Away,1.4,43.3,Draw
+Crystal Palace vs Bournemouth,Away_GA_L5,Attack,Away,2.0,43.3,Draw
+Crystal Palace vs Bournemouth,Away_ShotsOnTargetA_L5,Other,Away,6.333333333333333,43.3,Draw
+Brighton vs Newcastle Utd,xG_L5,Attack,Away,1.6666666666666667,53.4,Draw
+Brighton vs Newcastle Utd,G_L5,Attack,Away,1.6666666666666667,53.4,Draw
+Brighton vs Newcastle Utd,ShotsOnTarget_L5,Other,Away,4.333333333333333,53.4,Draw
+Brighton vs Newcastle Utd,xGA_L5,Attack,Away,1.2333333333333334,53.4,Draw
+Brighton vs Newcastle Utd,GA_L5,Attack,Away,1.3333333333333333,53.4,Draw
+Brighton vs Newcastle Utd,ShotsOnTargetA_L5,Other,Away,40.333333333333336,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_xG_L5,Attack,Home,1.46,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_G_L5,Attack,Home,1.8,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_ShotsOnTarget_L5,Other,Home,23.2,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_xGA_L5,Attack,Home,1.36,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_GA_L5,Attack,Home,1.4,53.4,Draw
+Brighton vs Newcastle Utd,HomeOverall_ShotsOnTargetA_L5,Other,Home,19.6,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_xG_L5,Attack,Away,1.2,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_G_L5,Attack,Away,0.8,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_ShotsOnTarget_L5,Other,Away,8.6,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_xGA_L5,Attack,Away,0.78,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_GA_L5,Attack,Away,0.4,53.4,Draw
+Brighton vs Newcastle Utd,AwayOverall_ShotsOnTargetA_L5,Other,Away,22.6,53.4,Draw
+Brighton vs Newcastle Utd,Away_xG_L5,Attack,Away,0.7000000000000001,53.4,Draw
+Brighton vs Newcastle Utd,Away_G_L5,Attack,Away,0.0,53.4,Draw
+Brighton vs Newcastle Utd,Away_ShotsOnTarget_L5,Other,Away,42.666666666666664,53.4,Draw
+Brighton vs Newcastle Utd,Away_xGA_L5,Attack,Away,0.4666666666666666,53.4,Draw
+Brighton vs Newcastle Utd,Away_GA_L5,Attack,Away,0.0,53.4,Draw
+Brighton vs Newcastle Utd,Away_ShotsOnTargetA_L5,Other,Away,2.0,53.4,Draw
+Manchester City vs Everton,xG_L5,Attack,Away,2.1,66.6,Home Win
+Manchester City vs Everton,G_L5,Attack,Away,2.6666666666666665,66.6,Home Win
+Manchester City vs Everton,ShotsOnTarget_L5,Other,Away,6.0,66.6,Home Win
+Manchester City vs Everton,xGA_L5,Attack,Away,0.9,66.6,Home Win
+Manchester City vs Everton,GA_L5,Attack,Away,1.0,66.6,Home Win
+Manchester City vs Everton,ShotsOnTargetA_L5,Other,Away,41.333333333333336,66.6,Home Win
+Manchester City vs Everton,HomeOverall_xG_L5,Attack,Home,1.64,66.6,Home Win
+Manchester City vs Everton,HomeOverall_G_L5,Attack,Home,2.2,66.6,Home Win
+Manchester City vs Everton,HomeOverall_ShotsOnTarget_L5,Other,Home,22.2,66.6,Home Win
+Manchester City vs Everton,HomeOverall_xGA_L5,Attack,Home,1.08,66.6,Home Win
+Manchester City vs Everton,HomeOverall_GA_L5,Attack,Home,0.8,66.6,Home Win
+Manchester City vs Everton,HomeOverall_ShotsOnTargetA_L5,Other,Home,18.8,66.6,Home Win
+Manchester City vs Everton,AwayOverall_xG_L5,Attack,Away,1.4599999999999995,66.6,Home Win
+Manchester City vs Everton,AwayOverall_G_L5,Attack,Away,1.4,66.6,Home Win
+Manchester City vs Everton,AwayOverall_ShotsOnTarget_L5,Other,Away,14.8,66.6,Home Win
+Manchester City vs Everton,AwayOverall_xGA_L5,Attack,Away,1.02,66.6,Home Win
+Manchester City vs Everton,AwayOverall_GA_L5,Attack,Away,1.2,66.6,Home Win
+Manchester City vs Everton,AwayOverall_ShotsOnTargetA_L5,Other,Away,22.6,66.6,Home Win
+Manchester City vs Everton,Away_xG_L5,Attack,Away,1.1333333333333333,66.6,Home Win
+Manchester City vs Everton,Away_G_L5,Attack,Away,1.3333333333333333,66.6,Home Win
+Manchester City vs Everton,Away_ShotsOnTarget_L5,Other,Away,23.333333333333332,66.6,Home Win
+Manchester City vs Everton,Away_xGA_L5,Attack,Away,1.3333333333333333,66.6,Home Win
+Manchester City vs Everton,Away_GA_L5,Attack,Away,1.6666666666666667,66.6,Home Win
+Manchester City vs Everton,Away_ShotsOnTargetA_L5,Other,Away,3.0,66.6,Home Win
+Fulham vs Arsenal,xG_L5,Attack,Away,1.2,38.0,Home Win
+Fulham vs Arsenal,G_L5,Attack,Away,1.6666666666666667,38.0,Home Win
+Fulham vs Arsenal,ShotsOnTarget_L5,Other,Away,3.0,38.0,Home Win
+Fulham vs Arsenal,xGA_L5,Attack,Away,1.0,38.0,Home Win
+Fulham vs Arsenal,GA_L5,Attack,Away,0.6666666666666666,38.0,Home Win
+Fulham vs Arsenal,ShotsOnTargetA_L5,Other,Away,34.666666666666664,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_xG_L5,Attack,Home,0.96,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_G_L5,Attack,Home,1.2,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_ShotsOnTarget_L5,Other,Home,29.4,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_xGA_L5,Attack,Home,1.16,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_GA_L5,Attack,Home,1.8,38.0,Home Win
+Fulham vs Arsenal,HomeOverall_ShotsOnTargetA_L5,Other,Home,19.2,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_xG_L5,Attack,Away,1.6,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_G_L5,Attack,Away,1.6,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_ShotsOnTarget_L5,Other,Away,16.6,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_xGA_L5,Attack,Away,0.5199999999999999,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_GA_L5,Attack,Away,0.6,38.0,Home Win
+Fulham vs Arsenal,AwayOverall_ShotsOnTargetA_L5,Other,Away,16.4,38.0,Home Win
+Fulham vs Arsenal,Away_xG_L5,Attack,Away,1.2666666666666666,38.0,Home Win
+Fulham vs Arsenal,Away_G_L5,Attack,Away,1.0,38.0,Home Win
+Fulham vs Arsenal,Away_ShotsOnTarget_L5,Other,Away,34.333333333333336,38.0,Home Win
+Fulham vs Arsenal,Away_xGA_L5,Attack,Away,0.8666666666666667,38.0,Home Win
+Fulham vs Arsenal,Away_GA_L5,Attack,Away,0.6666666666666666,38.0,Home Win
+Fulham vs Arsenal,Away_ShotsOnTargetA_L5,Other,Away,4.333333333333333,38.0,Home Win
+Tottenham vs Aston Villa,xG_L5,Attack,Away,1.1,34.4,Away Win
+Tottenham vs Aston Villa,G_L5,Attack,Away,1.3333333333333333,34.4,Away Win
+Tottenham vs Aston Villa,ShotsOnTarget_L5,Other,Away,3.3333333333333335,34.4,Away Win
+Tottenham vs Aston Villa,xGA_L5,Attack,Away,1.1666666666666667,34.4,Away Win
+Tottenham vs Aston Villa,GA_L5,Attack,Away,0.6666666666666666,34.4,Away Win
+Tottenham vs Aston Villa,ShotsOnTargetA_L5,Other,Away,29.333333333333332,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_xG_L5,Attack,Home,0.82,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_G_L5,Attack,Home,1.6,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_ShotsOnTarget_L5,Other,Home,23.8,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_xGA_L5,Attack,Home,1.24,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_GA_L5,Attack,Home,1.0,34.4,Away Win
+Tottenham vs Aston Villa,HomeOverall_ShotsOnTargetA_L5,Other,Home,12.4,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_xG_L5,Attack,Away,0.9,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_G_L5,Attack,Away,1.2,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_ShotsOnTarget_L5,Other,Away,10.8,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_xGA_L5,Attack,Away,1.4200000000000002,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_GA_L5,Attack,Away,1.2,34.4,Away Win
+Tottenham vs Aston Villa,AwayOverall_ShotsOnTargetA_L5,Other,Away,25.6,34.4,Away Win
+Tottenham vs Aston Villa,Away_xG_L5,Attack,Away,0.7999999999999999,34.4,Away Win
+Tottenham vs Aston Villa,Away_G_L5,Attack,Away,0.3333333333333333,34.4,Away Win
+Tottenham vs Aston Villa,Away_ShotsOnTarget_L5,Other,Away,20.333333333333332,34.4,Away Win
+Tottenham vs Aston Villa,Away_xGA_L5,Attack,Away,1.4,34.4,Away Win
+Tottenham vs Aston Villa,Away_GA_L5,Attack,Away,0.6666666666666666,34.4,Away Win
+Tottenham vs Aston Villa,Away_ShotsOnTargetA_L5,Other,Away,2.6666666666666665,34.4,Away Win
+Liverpool vs Manchester Utd,xG_L5,Attack,Away,1.2,65.6,Home Win
+Liverpool vs Manchester Utd,G_L5,Attack,Away,2.3333333333333335,65.6,Home Win
+Liverpool vs Manchester Utd,ShotsOnTarget_L5,Other,Away,5.333333333333333,65.6,Home Win
+Liverpool vs Manchester Utd,xGA_L5,Attack,Away,0.9666666666666668,65.6,Home Win
+Liverpool vs Manchester Utd,GA_L5,Attack,Away,1.0,65.6,Home Win
+Liverpool vs Manchester Utd,ShotsOnTargetA_L5,Other,Away,37.666666666666664,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_xG_L5,Attack,Home,1.6,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_G_L5,Attack,Home,1.2,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_ShotsOnTarget_L5,Other,Home,20.0,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_xGA_L5,Attack,Home,1.0399999999999998,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_GA_L5,Attack,Home,1.0,65.6,Home Win
+Liverpool vs Manchester Utd,HomeOverall_ShotsOnTargetA_L5,Other,Home,14.6,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_xG_L5,Attack,Away,2.1,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_G_L5,Attack,Away,1.6,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_ShotsOnTarget_L5,Other,Away,28.2,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_xGA_L5,Attack,Away,1.38,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_GA_L5,Attack,Away,1.8,65.6,Home Win
+Liverpool vs Manchester Utd,AwayOverall_ShotsOnTargetA_L5,Other,Away,22.0,65.6,Home Win
+Liverpool vs Manchester Utd,Away_xG_L5,Attack,Away,1.6333333333333335,65.6,Home Win
+Liverpool vs Manchester Utd,Away_G_L5,Attack,Away,0.6666666666666666,65.6,Home Win
+Liverpool vs Manchester Utd,Away_ShotsOnTarget_L5,Other,Away,49.666666666666664,65.6,Home Win
+Liverpool vs Manchester Utd,Away_xGA_L5,Attack,Away,2.1,65.6,Home Win
+Liverpool vs Manchester Utd,Away_GA_L5,Attack,Away,2.3333333333333335,65.6,Home Win
+Liverpool vs Manchester Utd,Away_ShotsOnTargetA_L5,Other,Away,5.666666666666667,65.6,Home Win
+West Ham vs Brentford,xG_L5,Attack,Away,0.6333333333333333,45.2,Away Win
+West Ham vs Brentford,G_L5,Attack,Away,0.6666666666666666,45.2,Away Win
+West Ham vs Brentford,ShotsOnTarget_L5,Other,Away,3.6666666666666665,45.2,Away Win
+West Ham vs Brentford,xGA_L5,Attack,Away,2.0333333333333337,45.2,Away Win
+West Ham vs Brentford,GA_L5,Attack,Away,3.3333333333333335,45.2,Away Win
+West Ham vs Brentford,ShotsOnTargetA_L5,Other,Away,42.666666666666664,45.2,Away Win
+West Ham vs Brentford,HomeOverall_xG_L5,Attack,Home,1.04,45.2,Away Win
+West Ham vs Brentford,HomeOverall_G_L5,Attack,Home,1.0,45.2,Away Win
+West Ham vs Brentford,HomeOverall_ShotsOnTarget_L5,Other,Home,20.8,45.2,Away Win
+West Ham vs Brentford,HomeOverall_xGA_L5,Attack,Home,1.52,45.2,Away Win
+West Ham vs Brentford,HomeOverall_GA_L5,Attack,Home,1.6,45.2,Away Win
+West Ham vs Brentford,HomeOverall_ShotsOnTargetA_L5,Other,Home,21.6,45.2,Away Win
+West Ham vs Brentford,AwayOverall_xG_L5,Attack,Away,1.16,45.2,Away Win
+West Ham vs Brentford,AwayOverall_G_L5,Attack,Away,1.4,45.2,Away Win
+West Ham vs Brentford,AwayOverall_ShotsOnTarget_L5,Other,Away,10.4,45.2,Away Win
+West Ham vs Brentford,AwayOverall_xGA_L5,Attack,Away,1.34,45.2,Away Win
+West Ham vs Brentford,AwayOverall_GA_L5,Attack,Away,1.8,45.2,Away Win
+West Ham vs Brentford,AwayOverall_ShotsOnTargetA_L5,Other,Away,31.8,45.2,Away Win
+West Ham vs Brentford,Away_xG_L5,Attack,Away,1.0666666666666669,45.2,Away Win
+West Ham vs Brentford,Away_G_L5,Attack,Away,1.0,45.2,Away Win
+West Ham vs Brentford,Away_ShotsOnTarget_L5,Other,Away,28.0,45.2,Away Win
+West Ham vs Brentford,Away_xGA_L5,Attack,Away,1.4333333333333331,45.2,Away Win
+West Ham vs Brentford,Away_GA_L5,Attack,Away,2.6666666666666665,45.2,Away Win
+West Ham vs Brentford,Away_ShotsOnTargetA_L5,Other,Away,3.3333333333333335,45.2,Away Win
