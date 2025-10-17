@@ -330,6 +330,13 @@ Clean separation of training, validation, and prediction modes via configuration
 - Model evaluation and validation
 - Threshold optimization for precision
 
+**Data Visualization & Business Intelligence:**
+- Advanced Tableau dashboard development and deployment
+- Interactive data visualization design
+- Translation of technical features to actionable insights
+- Data storytelling through comprehensive visual analytics
+- Public dashboard publishing and user experience optimization
+
 **Software Engineering:**
 - Modular code architecture
 - Configuration-driven design
@@ -339,6 +346,7 @@ Clean separation of training, validation, and prediction modes via configuration
 
 **Tools & Technologies:**
 - Python ecosystem (pandas, scikit-learn, Flask)
+- Tableau Desktop/Public for advanced data visualization
 - RESTful web scraping
 - YAML configuration
 - Virtual environments
