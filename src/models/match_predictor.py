@@ -130,23 +130,23 @@ def add_home_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
 
     cols = {
         # for (home made)
-        "HomexG": "xG_L5",
-        "HomeGoals": "G_L5",
-        "HomeShotsOnTargetMade": "ShotsOnTarget_L5",
-        "HomeSavesMade": "Saves_L5",
-        "HomeTacklesMade": "Tackles_L5",
-        "HomeCrossesMade": "Crosses_L5",
-        "HomeTouchesMade": "Touches_L5",
-        "HomeLongBallsMade": "LongBalls_L5",
+        "HomexG": "xG_L3",
+        "HomeGoals": "G_L3",
+        "HomeShotsOnTargetMade": "ShotsOnTarget_L3",
+        "HomeSavesMade": "Saves_L3",
+        "HomeTacklesMade": "Tackles_L3",
+        "HomeCrossesMade": "Crosses_L3",
+        "HomeTouchesMade": "Touches_L3",
+        "HomeLongBallsMade": "LongBalls_L3",
 
         # against (conceded by home)
-        "Home_xGA": "xGA_L5",
-        "Home_GA": "GA_L5",
-        "ShotsOnTargetConceded": "ShotsOnTargetA_L5",
-        "TacklesConceded": "TacklesA_L5",
-        "CrossesConceded": "CrossesA_L5",
-        "TouchesConceded": "TouchesA_L5",
-        "LongBallsConceded": "LongBallsA_L5",
+        "Home_xGA": "xGA_L3",
+        "Home_GA": "GA_L3",
+        "ShotsOnTargetConceded": "ShotsOnTargetA_L3",
+        "TacklesConceded": "TacklesA_L3",
+        "CrossesConceded": "CrossesA_L3",
+        "TouchesConceded": "TouchesA_L3",
+        "LongBallsConceded": "LongBallsA_L3",
     }
 
     for c in cols:
@@ -198,21 +198,21 @@ def add_away_recent_form(out: pd.DataFrame, window: int = 5) -> pd.DataFrame:
         out["A_LongBallsConceded"] = pd.to_numeric(out["HomeLongBallsMade"], errors="coerce")
 
     cols = {
-        "AwayxG": "Away_xG_L5",
-        "AwayGoals": "Away_G_L5",
-        "AwayShotsOnTargetMade": "Away_ShotsOnTarget_L5",
-        "AwaySavesMade": "Away_Saves_L5",
-        "AwayTacklesMade": "Away_Tackles_L5",
-        "AwayCrossesMade": "Away_Crosses_L5",
-        "AwayTouchesMade": "Away_Touches_L5",
-        "AwayLongBallsMade": "Away_LongBalls_L5",
-        "Away_xGA": "Away_xGA_L5",
-        "Away_GA": "Away_GA_L5",
-        "A_ShotsOnTargetConceded": "Away_ShotsOnTargetA_L5",
-        "A_TacklesConceded": "Away_TacklesA_L5",
-        "A_CrossesConceded": "Away_CrossesA_L5",
-        "A_TouchesConceded": "Away_TouchesA_L5",
-        "A_LongBallsConceded": "Away_LongBallsA_L5",
+        "AwayxG": "Away_xG_L3",
+        "AwayGoals": "Away_G_L3",
+        "AwayShotsOnTargetMade": "Away_ShotsOnTarget_L3",
+        "AwaySavesMade": "Away_Saves_L3",
+        "AwayTacklesMade": "Away_Tackles_L3",
+        "AwayCrossesMade": "Away_Crosses_L3",
+        "AwayTouchesMade": "Away_Touches_L3",
+        "AwayLongBallsMade": "Away_LongBalls_L3",
+        "Away_xGA": "Away_xGA_L3",
+        "Away_GA": "Away_GA_L3",
+        "A_ShotsOnTargetConceded": "Away_ShotsOnTargetA_L3",
+        "A_TacklesConceded": "Away_TacklesA_L3",
+        "A_CrossesConceded": "Away_CrossesA_L3",
+        "A_TouchesConceded": "Away_TouchesA_L3",
+        "A_LongBallsConceded": "Away_LongBallsA_L3",
     }
 
     for c in cols:
@@ -438,13 +438,13 @@ PREDICTORS = [
     "MinutesSinceMidnight", "Hour",
     "OppCode", "HomeCode", "VenueCode", "DayCode",
 
-    # recent HOME form (for)
-    "xG_L5", "G_L5", "ShotsOnTarget_L5", "Saves_L5",
-    "Tackles_L5", "Crosses_L5", "Touches_L5", "LongBalls_L5",
+    # recent HOME form (for) - last 3 home matches
+    "xG_L3", "G_L3", "ShotsOnTarget_L3", "Saves_L3",
+    "Tackles_L3", "Crosses_L3", "Touches_L3", "LongBalls_L3",
 
-    # recent HOME form (against)
-    "xGA_L5", "GA_L5", "ShotsOnTargetA_L5", "TacklesA_L5",
-    "CrossesA_L5", "TouchesA_L5", "LongBallsA_L5",
+    # recent HOME form (against) - last 3 home matches
+    "xGA_L3", "GA_L3", "ShotsOnTargetA_L3", "TacklesA_L3",
+    "CrossesA_L3", "TouchesA_L3", "LongBallsA_L3",
 
     # overall recent form (home team)
     "HomeOverall_xG_L5", "HomeOverall_G_L5", "HomeOverall_ShotsOnTarget_L5",
@@ -462,11 +462,11 @@ PREDICTORS = [
     "AwayOverall_TacklesA_L5", "AwayOverall_CrossesA_L5",
     "AwayOverall_TouchesA_L5", "AwayOverall_LongBallsA_L5",
 
-    # venue-specific away form
-    "Away_xG_L5", "Away_G_L5", "Away_ShotsOnTarget_L5", "Away_Saves_L5",
-    "Away_Tackles_L5", "Away_Crosses_L5", "Away_Touches_L5", "Away_LongBalls_L5",
-    "Away_xGA_L5", "Away_GA_L5", "Away_ShotsOnTargetA_L5", "Away_TacklesA_L5",
-    "Away_CrossesA_L5", "Away_TouchesA_L5", "Away_LongBallsA_L5",
+    # venue-specific away form - last 3 away matches
+    "Away_xG_L3", "Away_G_L3", "Away_ShotsOnTarget_L3", "Away_Saves_L3",
+    "Away_Tackles_L3", "Away_Crosses_L3", "Away_Touches_L3", "Away_LongBalls_L3",
+    "Away_xGA_L3", "Away_GA_L3", "Away_ShotsOnTargetA_L3", "Away_TacklesA_L3",
+    "Away_CrossesA_L3", "Away_TouchesA_L3", "Away_LongBallsA_L3",
 ]
 
 LABEL_MAP = {0: "Away Win", 1: "Draw", 2: "Home Win"}

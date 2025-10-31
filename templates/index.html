@@ -36,6 +36,28 @@
     </div>
 
     <div id="list" class="grid gap-4"></div>
+
+    <!-- Odds preview (auto-rendered from prediction CSV) -->
+    <div id="oddsPreview" class="mt-8 hidden">
+      <h2 class="text-lg font-semibold mb-2">Match Odds (Model-implied)</h2>
+      <div class="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600">
+            <tr>
+              <th class="px-3 py-2 text-left">Date</th>
+              <th class="px-3 py-2 text-left">Match</th>
+              <th class="px-3 py-2 text-right">Home (dec)</th>
+              <th class="px-3 py-2 text-right">Draw (dec)</th>
+              <th class="px-3 py-2 text-right">Away (dec)</th>
+              <th class="px-3 py-2 text-right">Home (US)</th>
+              <th class="px-3 py-2 text-right">Draw (US)</th>
+              <th class="px-3 py-2 text-right">Away (US)</th>
+            </tr>
+          </thead>
+          <tbody id="oddsBody" class="divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
   <footer class="max-w-5xl mx-auto px-4 pb-10 text-xs text-gray-500">
@@ -48,6 +70,8 @@
     const listEl = document.getElementById("list");
     const sortEl = document.getElementById("sort");
     const minConfEl = document.getElementById("minConf");
+    const oddsPreview = document.getElementById("oddsPreview");
+    const oddsBody = document.getElementById("oddsBody");
 
     const fmtPct = p => (Number(p) * 100).toFixed(1) + "%";
     const toLocalDate = iso => new Date(iso).toLocaleString(undefined, {
@@ -148,6 +172,38 @@
       render(rows);
     }
 
+    function probToAmerican(p) {
+      if (p >= 0.5) return Math.round(- (p / (1 - p)) * 100);
+      return Math.round(((1 - p) / p) * 100);
+    }
+
+    function renderOdds(rows) {
+      // Build odds from probabilities for the same first 10 matches
+      oddsBody.innerHTML = "";
+      const eps = 1e-6;
+      const subset = rows.slice(0, 10);
+      subset.forEach(r => {
+        const ph = Math.min(Math.max(Number(r.p_home_win), eps), 1 - eps);
+        const pd = Math.min(Math.max(Number(r.p_draw), eps), 1 - eps);
+        const pa = Math.min(Math.max(Number(r.p_home_loss), eps), 1 - eps);
+
+        const tr = document.createElement("tr");
+        const date = new Date(r.Date).toLocaleString();
+        tr.innerHTML = `
+          <td class="px-3 py-2 whitespace-nowrap">${date}</td>
+          <td class="px-3 py-2 whitespace-nowrap">${r.Home} vs ${r.Away}</td>
+          <td class="px-3 py-2 text-right">${(1/ph).toFixed(2)}</td>
+          <td class="px-3 py-2 text-right">${(1/pd).toFixed(2)}</td>
+          <td class="px-3 py-2 text-right">${(1/pa).toFixed(2)}</td>
+          <td class="px-3 py-2 text-right">${probToAmerican(ph)}</td>
+          <td class="px-3 py-2 text-right">${probToAmerican(pd)}</td>
+          <td class="px-3 py-2 text-right">${probToAmerican(pa)}</td>
+        `;
+        oddsBody.appendChild(tr);
+      });
+      if (subset.length) oddsPreview.classList.remove("hidden");
+    }
+
     (async function init() {
       try {
         showStatus("Loading fixtures from CSV…");
@@ -178,6 +234,7 @@
 
             document.getElementById("status").classList.add("hidden");
             applyView(future);
+            renderOdds(future);
 
             document.getElementById("sort").addEventListener("change", () => applyView(future));
             document.getElementById("minConf").addEventListener("input", () => applyView(future));

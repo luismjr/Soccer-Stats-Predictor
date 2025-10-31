@@ -82,7 +82,11 @@ def create_advanced_tableau_export():
     df['MatchImportance'] = confidence_spread.apply(lambda x: 'High Stakes' if x >= 0.4 else 'Medium Stakes' if x >= 0.2 else 'Low Stakes')
     
     # Team strength analysis (using available features)
-    feature_cols = [col for col in df.columns if '_L5' in col and ('xG' in col or 'G' in col or 'ShotsOnTarget' in col)]
+    # Include both 3-game venue-specific (_L3) and 5-game overall (_L5) rolling features
+    feature_cols = [
+        col for col in df.columns
+        if (('_L5' in col or '_L3' in col) and ('xG' in col or 'G' in col or 'ShotsOnTarget' in col))
+    ]
     
     if feature_cols:
         # Calculate home team strength
